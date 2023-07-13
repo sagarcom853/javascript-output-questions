@@ -9,6 +9,134 @@ https://plainenglish.io/blog/50-javascript-output-questions
 // Question: What is the value of typeof null
 // Answer: "object"
 
+var hero = {
+  _name: "XYZ",
+  getSecretIdentity: function () {
+    return this. Name;
+  },
+};
+
+var stoleSecretIdentity = hero. GetSecretIdentity;
+
+console.log (stoleSecretIdentity ()); // undefined
+console.log (hero. GetSecretIdentity()); //xyz
+
+//Explanation:
+When you run this code, the first console.log (stoleSecretIdentity ()) will return undefined because when you assign the getSecretIdentity function to the stoleSecretIdentity variable, you lose the context of the hero object. This keyword inside the function will now refer to the global object, and there is no _name property on the global object, so the getSecretIdentity function returns undefined.
+The second console.log (hero. GetSecretIdentity ()) will return 'XYZ' because the context of the hero object is preserved and the this. Name returns the value of 'XYZ'
+It's important to note that, when you assign a method to a variable and call it, the context of the function is lost, and this keyword will refer to the global object (or undefined in strict mode). To preserve the context of the function, you can use the bind method to create a new function with a fixed context.
+
+To resolve this, we can code
+var hero = {
+    _name: 'XYZ',
+    getSecretIdentity: function (){
+        return this. Name;
+    }
+};
+
+var stoleSecretIdentity = hero. getSecretIdentity. bind(hero); <-- binding
+ console.log (stoleSecretIdentity ());
+console.log (hero. GetSecretIdentity ());
+
+
+The bind method creates a new function with this keyword set to the first argument passed to the method, which in this case is the hero object. Now when you call stoleSecretIdentity () it will return 'XYZ' as the context of the hero object is preserved and the this. Name returns the value of 'XYZ'
+It's important to note that bind method creates a new function and does not change the original function so the original function can still be called normally.
+
+//  var x = 23;
+      (function(){
+        var x = 43;
+        (function random(){
+          x++;  // if X++ not there ,then console.log(x) will be undefined.
+          res.send(x)    //NaN because of X++ ,  --> undefined++  --> NaN
+          var x = 21;
+        })();
+      })();
+
+//function foo() {
+          let a = b = 0;
+          a++;
+          return a;
+        }
+        foo();
+        typeof a; // => undefined
+        typeof b; // => number
+
+//for (var i = 0; i < 3; i++) {
+  const log = () => {
+    console.log(i); // 3 3 3 three times program will execute.
+  };
+  setTimeout(log, 100);
+}
+//Explanation: In this code, we have a for loop that runs 3 times and each time it creates an anonymous function log that uses the console.log(i) statement to log the current value of i at the time of the function call.
+It also sets a timeout of 100 milliseconds before calling the log function using setTimeout(log, 100).
+When the for loop completes the execution, all three log functions will have been created with the same i value, which will be 3, therefore all three function calls will log 3 to the console.
+This is an example of closure, where the log function has access to the variable i in the parent scope, even though the for loop has completed execution.
+It's important to note that if we use let instead of const in the for loop, the output will be 0,1,2 as it creates a new binding for each iteration of the loop, and the log function will have access to the current value of i at the time of the function call.
+
+//for (let i = 0; i < 3; i++) {
+  const log = () => {
+    console.log(i); // 3 3 3 three times program will execute.
+  };
+  setTimeout(log, 100);
+}
+//Explaination: In this code, the for loop creates a new binding for the variable i for each iteration, so when the log function is called, it has access to the current value of i at the time of the function call. Since we are using let instead of const in the for loop, the output will be 0,1,2 as the variable i is scoped inside the for loop( or we can say let is block scoped hence the value keeps on reinitializing)  block and the log function will log the current value of i at the time of the function call.
+The setTimeout function is a non-blocking function, it will execute the log function after 100 milliseconds, and since i is scoped inside the for loop, it will not change the value of i when the log function is called.
+It's important to note that when using let, the variable is scoped within the block, so the i variable is created and destroyed for each iteration, allowing the log function to access the correct value of i at the time of the function call. Hence 0 1 2 
+When there is var, the variable is function scoped and the “i” keeps the reference to the current value of the iteration every time it goes on increasing and since it has a value of 3 at the time of the end of loop, and because of set time. When set time out ends it will print the latest value it is referencing to which is 3. Hence 3 3 3.
+
+Solving this by using closures:
+function a () {
+  for (var i =0; i<3; i++) {
+     (Function(i) {
+      setTimeout (() => {
+        console.log(i)
+      })
+    }) (i)
+  }
+}
+a()
+// Explaination: Here, we wrap the call to setTimeout in an anonymous function that takes the current value of i as an argument. This creates a new scope for each iteration of the loop and assigns the current value of i to the parameter of this function. This way, when the setTimeout callback is invoked, it has access to the correct value of i and logs the expected output.
+This is the common way to solve this problem, also named as "IIFE" (Immediately Invoked Function Expression) which creates a new scope for each iteration and assigns the current value of the variable to the parameter of this function.
+
+//var obj = {
+	  name: "sagar",
+  display() {
+	    console.log(this.name);
+	  },
+	Tiger:()=> {
+	    console.log(this.name)
+	};
+	var obj1 = { name: "akash" };
+	obj.display.call(obj1);     // akash
+	obj.Tiger.call(obj1) // undefined. Because it is an arrow function which only points to its lexical environment which is the environment for obj which is global scope or window object. And there is no name variable in window,hence undefined.
+}
+
+//
+const a = {};
+const b = { key: "b" };
+const c = { key: "c" };
+
+a[b] = 123;
+a[c] = 456;
+Solution
+------------
+a[b] == a[“[object object]”] == a[c]
+Hence,
+
+console.log(a[b]) // 456
+console.log(a[c]) // 456
+
+This code creates three empty objects, a, b, and c.
+It then adds two properties to a object, where the key of the first property is the object b and its value is 123, and the key of the second property is the object c and its value is 456.
+When you try to access the properties of an object using the b and c objects as keys you will get undefined because objects are converted to string representation "[object Object]" when used as object property keys.
+So, a[b] and a[c] will be equivalent to a ["[object Object]"] and the value of that property will be 456 which is the last assignment made.
+it's not a good practice to use objects as keys in JavaScript because objects are not guaranteed to have a consistent string representation, and so using them as keys can lead to unexpected behavior.
+
+//0.1 + 0.3 = 0.30000000000004
+Numbers in JavaScript are treated with floating point precision, and as such they might not give expected results
+Remember promises have higher priority then set timeout, if you get any question where the time setTimeout Is same but promises and setTimeout then output from promise will come earlier
+
+
 // Question: What is console.log(true+false)
 // Answer: 1 here true -->> 1 & false -->> 0 then 1 + 0 -->> 1
 
