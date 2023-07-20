@@ -9,6 +9,15 @@ https://plainenglish.io/blog/50-javascript-output-questions
 // Question: What is the value of typeof null
 // Answer: "object"
 
+// Prototype chaining: 
+let arr = ['sagar', 'badal']
+now, 
+arr.__proto__  // returns constructor function which contains all array properties.
+arr.__proto__.forEach // will return the function itself as it is contained in construtor which is called from arr.__proto__
+arr.__proto__.__proto__ // it returns Object.Prototype's constructor since Array is defined from Object, hence calling array's parent will give Object.prototype' constructor.
+arr.__proto__.__proto__.__proto // the parent of object or the top most is null. 
+
+
 var hero = {
   _name: "XYZ",
   getSecretIdentity: function () {
