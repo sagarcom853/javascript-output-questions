@@ -209,9 +209,7 @@ console.log(a[0]==b[0]); //true
 console.log(a[0]===b[0]); //true
 //Explaination : Here we are comparing elements inside an array, not a memory location. We specify the index so that's why element get compared.
 -----------------------------
-let z= [1,2,3]
-let a ={name: "priya"}
-console.log(...z); // 1 2 3 
+       // 1 2 3 
 //Explaination : ...z means destructing happened i.e, all the elements are come out from an array/object.
 ------------------------------
 console.log(typeof NaN); //number
@@ -236,12 +234,12 @@ console.log(delete data); //false
 ------------------------------------
 const data = ["piya", "priya", "supriya"];
 const [y] = data;
-console.log(y); //"priya"
+console.log(y); //"piya"
 //Explaination : We are doing destructuring here. y is representing the first index only
 -------------------------------------
 const data = ["piya", "priya", "supriya"];
 const [y,z] = data;
-console.log(y,z); //"priya", "priya"
+console.log(y,z); //"piya", "priya"
 //Explaination : We are doing destructuring here. y is representing the first index only and z representing the second index.
 --------------------------------------
 const data = ["piya", "priya", "supriya"];
@@ -257,7 +255,7 @@ console.log(name);//priya
 let data ={name:"priya"}
 let data1={city:"ABC"}
 data = {...data, ...data1} //merge 2 objects
-console.log(data); // {name:"priya", age:"ABC"}
+console.log(data); // {name:"priya", city:"ABC"}
 //Explaination : using spread operator we use to merge the 2 objects. Three dots will pop out the property from an object and assign inside curly brackets.
 -----------------------------------------
 let data ={name:"priya"}
@@ -392,7 +390,7 @@ let data ="true";
 //convert data into boolean true value
 console.log(!!data); //true
 console.log(typeof !!data); //boolean
-//Explaination : ! will make boolean value(or opposite value). 
+//Explaination : !! will make boolean value and ! will make opposite.. 
 ---------------------------------------------------------
 Diff between Map and foreach: Map will return new thing but Foreach didn't return anything.
 ---------------------------------------------------------
@@ -635,7 +633,7 @@ function sayHi(){
   return ()=>0;
 }
 console.log(typeof sayHi()); //function
-console.log(typeof sayHi()()); //function
+console.log(typeof sayHi()()); //function32
 //Explaination : sayHi will return anonymous arrow function/IIFE, where we didn't invole the arroe function so it will return function.
 -----------------------------------------------------------------------------
 console.log(typeof typeof 1); //string
@@ -675,7 +673,7 @@ const firstPromise = new Promise((res, rej)=>{
 const secondPromise = new Promise((res, rej)=>{
   setTimeout(res, 100, 'second');
 })
-Promise.race([firstPromise, secondPromise]).then(res => console.log(res));
+Promise.race([firstPromise, secondPromise]).then(res => console.log(res));  //second
 //Explaination: Race will return only first matching result so it will print 100. For 500 it will take time to execute so it will not get print.
 -----------------------------------------------------------------------------------
 let person = {name: "priya"};
@@ -707,7 +705,7 @@ let data = [1,2,3].map( num =>{
   return num*2;
 })
 console.log(data); //[undefined,undefined,undefined]
-//Explaination: If jusr return then it will print undefined.
+//Explaination: If just return then it will print undefined.
 ----------------------------------------------------------------------------------------
 function getInfo(member){
   member.name = "priya";
@@ -752,7 +750,8 @@ console.log(typeof x); //undefined
 (()=>{
   let x = y = 20;
 })();
-console.log(y); //20
+console.log(y); 
+// x = undefined, var y = 10 --> 20 
 //Explaination: y is a var scope so it will overrite from 10 to 20
 -----------------------------------------------------------------------------------------
 let x =100;
@@ -812,6 +811,8 @@ for(let item in user){
 }
 
 console.log(user)
+
+//{ name: 'priya', age: 200 }
 ------------------------------------------------------------------------------------------
 const a = {}
 const b = {key : "b"}
@@ -934,9 +935,9 @@ Reason : It run the code quickly and it will not wait for setTimeout so value wi
 ---------------------------------------------------
 Above code can be fix by callback:
 console.log(1);
-function print(name, cb){
+function print(name, callback){
   setTimeout(()=>{
-     cb(`${name}`)
+     callback(name)
   },1000)
 }
 print("Priya", (value)=>{
@@ -956,7 +957,8 @@ let promises = new Promise((resolve, reject)=>{
 })
 promises.then((res)=>console.log(res))
 .catch((err)=>console.log(err))
-//resoled!!....
+
+//Resolved Promises!!...
 -------------------------------------------------------------------------------------------
 console.log(1);
 
@@ -1042,6 +1044,7 @@ fetchData()
 })
 
 Explaination : "First" "Error!!"
+//happening due to middleware present inside then
 reject("Error!!") gives string value so it will go to THEN block rather than CATCH block.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 displayName();
@@ -1104,22 +1107,28 @@ console.log("end");
 //start priya end Dolly
 //all the console will print first then aync and setTimeout
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-const promise = () => Promise.resolve("Success");
-function first(){
-  promise().then((res)=> console.log(res)); //async
-  console.log("First"); //sync
-}
-async function second(){
-  const res = await promise(); 
-  console.log(res); //async
-  console.log("Second"); //sync
-}
-first();
-second();
+function promise(){return new Promise((resolve)=>resolve('success'))}
 
-// First Sucess success second
-// sync(console) run hen async(promise)
+function first(){
+    console.log('first')
+    promise().then((res)=>console.log(res))
+    console.log('done in first')
+}
+
+async function second(){
+    console.log('second')
+    const res = await promise()
+    console.log(res)
+    console.log('done in second')
+}
+
+first()
+second()
+
+// it has to wait for async await to finish execution as it will block the code.
 //await pause the line of execution
+
+// first, done in first, second, success, success, done in second
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const person1 = {
   name : "Priya"
@@ -1172,18 +1181,18 @@ const person = {
   }
 }
 
-const jayesh = Object.create(person)
+const jayesh = Object.create(person)    // Object.create creates a new empty object which will inherit from the prototype.
 person.displayName(); //Priya
 console.log(jayesh); //{}
 jayesh.displayName(); //Priya
 I believe Object.create() creates a new object from the existing object, and both have the same memory addresses.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 let p = new Promise((resolve, reject)=>{
-   reject(Error("Failed!!"))                    
+   reject(Error("Failed!!"))   --> throwing Error                 
 })
 
 p.catch((error)=>{
-  console.log(error); //{}
+  console.log(error); //{} This will show the Error Object in the console statetement
   console.log(error.message); //failed
 }).then((result)=>{
   console.log(result) //undefined //doesn't return anything
