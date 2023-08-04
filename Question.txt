@@ -120,6 +120,20 @@ This is the common way to solve this problem, also named as "IIFE" (Immediately 
 	obj.Tiger.call(obj1) // undefined. Because it is an arrow function which only points to its lexical environment which is the environment for obj which is global scope or window object. And there is no name variable in window,hence undefined.
 }
 
+// var length = 10
+  function fn(){
+  console.log(this)          // this points to window
+  console.log(this.length)  //this.length will shows window's value
+}
+var obj = {
+  length: 5,               //local scope
+  method: function(fn){  
+      fn()
+      arguments[0]()      // arguments will find values from (fn,1), arguments[0] means fn.
+}
+}
+obj.method(fn,1) // fn will call, with 10 value because of outer scope.
+
 //
 const a = {};
 const b = { key: "b" };
@@ -169,7 +183,141 @@ Remember promises have higher priority then set timeout, if you get any question
 
 // Question: for var a = (1, 5 - 1) * 2 what is the value of a?
 // Answer: 8
+------------------------------------------------------------------
+//working with Reduce functions:
+//Return unique types from food array using sets and reduce: 
 
+let food = [
+  { name: "chiku", type: "fruit" },
+  { name: "apple", type: "fruit" },
+  { name: "burger", type: "fast food" },
+  { name: "banana", type: "fruit" },
+  { name: "tomato", type: "vegetable" },
+  { name: "biryani", type: "curry food" },
+  { name: "pakoda", type: "appetisers" }
+];
+let set = food.reduce((a,c)=>{
+return a.add(c.type)
+},new Set())
+let setArray = Array.from(set)        // ["fruit", "fast food", "vegetable", "curry food", "appetisers"]
+--------------------------------------------------------------------------
+// Function to calculate characters in string…
+let str = "hjvuwefgweufgeoeuwgfuegcveuiuducucbwcsaqwuwduoqwofcwebsigcewefbcwefcbiweelcbwvqiawldijwqknqwdklwwofdewbckewbiuubflce"
+
+function countString(str){
+    let arr = {}
+    for(let i in str){   //0,1,2,3,4………..
+        const char = str[i]
+        arr[char] = arr[char] + 1 || 1
+    }
+    console.log(str)
+    console.log(arr)
+console.log (Object.keys(arr).find((at)=>arr[at]===1)) // to check for non-repeting entries
+let keys = Object.keys(arr)
+let allSingleString = []
+keys.map((key)=> {   if(arr[key]===1){ allSingleString.push(key)}
+return allSingleString  returns all element having count 1.
+})
+}
+countString(str)
+
+//Second method uisng reduce: 
+  let strCount = str.split('').reduce((a, c) => (a[c] = (a[c] || 0) + 1, a),{}); 
+-----------------------------------------------------------------------------
+// Implement a function to find the key associated with the highest value in an object containing numerical values using reduce function
+function findKeyWithHighestValue(object) {
+  const keys = Object.keys(object);
+  if (keys.length === 0) {
+    return null;
+  }
+  return keys.reduce((maxKey, currentKey) => {
+    return object[currentKey] > object[maxKey] ? currentKey : maxKey;
+  });
+}
+findKeyWithHighestValue({a:1,b:45,c:13,d:23})  // b
+---------------------------------------------------------------------------
+Write code to capitalize each word after every sentence with reduce: 
+let str = "the.garden.is.pink";
+console.log(str.split("."));
+let palin = str.split(".").reduce((a, c) => {
+  let d = c.substring(1);
+  let t = c[0].toUpperCase();
+  let word = t + d;
+  return a +" "+word;
+}, "");                    
+------------------------------------------------------------------------------
+// writing function to check if two objs are same ? json.stringify
+And to check if the keys are same irrespective of the values second part
+
+let obj1 = { name: "sagar", age: 23 };
+let obj2 = { name: "sagar", age: 23};
+
+//first part
+if(JSON.stringify(obj1) === JSON.stringify(obj2)){
+  console.log('same from stringy')     // same from stringy
+}else{
+  console.log('not same from stringy')
+}
+//second part
+function compare(obj1, obj2) {
+  if(Object.keys(obj1).length !== Object.keys(obj2).length){     // for comparing the length of the object keys, if keys mismatch then automatically, values won't be same
+      return 'not same'
+  }
+  let tag = true;
+  for (let i in obj1) {
+    if (obj2.hasOwnProperty(i)) {
+      tag = true;
+    } else {
+      tag = false;
+      return 'not same'
+    }
+  }
+  return "same";
+}
+let c = compare(obj1, obj2);    //same
+-----------------------------------------------------------------------
+
+// function involving strings: 
+function findSubString(str) {
+  //if substring
+  let substring = "ou";
+  let result = str.includes(substring);
+
+  //where substring returns first index
+  result = str.indexOf(substring);
+
+  // how many times substring present
+  result = str.split(substring).length - 1;
+
+  //return all the strings containing substring and find indexes of the substring
+  str = str.split(" ");
+  let indexArray = [];
+  result = str.filter((ar, index) => {
+    if (ar.includes(substring)) {
+      indexArray.push(index);
+      return ar.includes(substring)
+    }
+  });
+  return result;
+}
+let str = "hello by godou who areou you, i dont knou you againou";
+const c = findSubString(str);
+console.log(c);
+-----------------------------------------------------------------------
+//  how many methods to write Function to reverse a String: 
+1.	Using Foor loop (avoid)
+2.	Using split (), reverse (), join ()
+3.	Using split (), and reduce <- use this
+4.	Use […str]. Reduce ((x,y)=> y.concat(x))
+5.	Use recursion by return ReverseString (str.substr(1) + str.charAt(0) )  <-- pushing each character at the back
+---------------------------------------------------------------------------
+// Generate OTP of 4 letters:
+function generate(){
+    const otp = Math.floor(Math.random()*9000+1000)
+    console.log(otp)
+}
+generate()
+----------------------------------------------------------------------------
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
 
