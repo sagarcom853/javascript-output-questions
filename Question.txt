@@ -318,6 +318,88 @@ function generate(){
 }
 generate()
 ----------------------------------------------------------------------------
+const input = [2, 7, 11, 4, -2];
+
+// find the sum of all the array elemetns except same index
+function addExceptIndex(input) {
+  return input.map((input1, index) => {
+    let inputCopy = input.slice();
+    inputCopy.splice(index, 1);
+    return inputCopy.reduce((a, c) => {
+      return a + c;
+    }, 0);
+  });
+}
+let c = addExceptIndex(input);
+console.log("c", c); // [20, 15, 11, 18, 24]
+---------------------------------------------------------------------------------
+let input1 = { a: 1, b: 2, c: 3, d: 10, e: 12 ,p:12};
+const input2 = { a: 2, e: 12, f: 6, d: 10 , p:12, i:2};
+
+function findCommonKeyValuePairs(input1, input2) {
+  let obj = {};
+  for (let i in input1) {
+    if (input2.hasOwnProperty(i)) {
+      if (input1[i] === input2[i]) {
+        obj[i] = input1[i];
+      }
+    }
+  }
+  return obj;
+}
+let c = findCommonKeyValuePairs(input1, input2);
+console.log(c);
+
+//output : {d:10, e:12}
+
+Alternate to this: 
+----------------------------------------------------------------
+function findCommonKeyValuePairs(obj1, obj2) {
+  const entries1 = Object.entries(obj1);
+  const entries2 = Object.entries(obj2);
+  const commonEntries = entries1.filter(([key, value]) => obj2[key] === value);
+  return Object.fromEntries(commonEntries);
+}
+
+const input1 = { a: 1, b: 2, c: 3, d: 10, e: 12, p: 12 };
+const input2 = { a: 2, e: 12, f: 6, d: 10, p: 12, i: 2 };
+
+const output = findCommonKeyValuePairs(input1, input2);
+console.log(output);
+---------------------------------------------------------------------
+
+//find the first missing odd number for any multiplier/
+function missingOdd(arr) {
+  let result = 0;
+  let n = 3;
+  let current = arr[0];
+
+  for (let i = 0; i <= arr.length; i++) {
+    if (arr[i] !== current) {
+      result = current;
+      break;
+    }
+    current = current + n;
+  }
+  return result;
+}
+let arr = [3, 6, 5, 7, 9, 11, 15, 17, 19];
+let a = missingOdd(arr);
+console.log(a);
+
+---------------------------------------------------------------------
+// Reverse a code word by word
+
+function reverse(str) {
+  let result = str.split(" ").map((a) => {
+    return a.split("").reduce((a, c) => c + a, "");
+  });
+  return result.join(' ');
+}
+let str = "This is JavaScript code";
+let c = reverse(str);
+console.log(c);  // sihT si tpircSavaJ edoc 
+-------------------------------------------------------------------
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
 
