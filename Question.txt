@@ -2,7 +2,97 @@ https://plainenglish.io/blog/50-javascript-output-questions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Question: What is typeof []
 // Answer: Object. Actually Array is derived from Object. If you want to check array use Array.isArray(arr)
+-----------------------------------------------------
+ Why does console.log(~8) output -9?
+~ is a bitwise operator that flips bits in the bit representation of a number. In JavaScript all bitwise operations are performed on 32-bit binary numbers.8 is represented as 00000000000000000000000000001000. The ~ operator flips this to 11111111111111111111111111110111, which is -9.
+-------------------------------------------------
+console.log(isNaN(false));
+This will output false. The value false will be coerced to 0, and NaN(0) will return false.
+---------------------------------------------------------------
+//
+console.log(new Number(5) === 5);    //false because new Number(5) is an object and 5 is number
+-------------------------------------------   
+const myArray = ['thing 1', 'thing 2', 'thing 3'];
+myArray.thing4 = 'not a thing';
+console.log(myArray)  // [0: 'thing 1', 1: 'thing 2', 2: 'thing 3', thing4: 'not a thing'] 
 
+for(const element in myArray){
+  console.log(myArray[element]);   // thing 1 thing 2 thing 3 not a thing  // unexpected
+}
+---------------------------------------------------------
+What will the code below output to the console and why?
+
+for(let i = 0; i < 10; i++){
+  if(i === 3){
+   return;
+  }
+  console.log(i);
+}
+This will throw a syntax error. The return statement is not a valid way of ending a for block. If you want to end a loop, use break.
+--------------------------------------------------------------
+Objects only support for in loop method not for of...
+
+//Question : 
+const length = 4;
+const numbers = [];
+for (var i = 0; i < length; i++);{
+  numbers.push(i + 1);
+}
+
+Let's take a closer look at the semicolon ; that appears right before the opening curly brace {:
+Being easily overlooked, this semicolon creates a null statement. The null statement is an empty statement that does nothing.
+
+The above code is equivalent to the following:
+const length = 4;
+const numbers = [];
+var i;
+for (i = 0; i < length; i++) {
+  // does nothing
+}
+{ 
+  // a simple block
+  numbers.push(i + 1);
+}
+numbers; // => ---> --->  [5]
+
+for() increments i variable until 4. Then JavaScript enters one time the block { numbers.push(i + 1); }, pushing 4 + 1 to numbers array.
+Thus numbers is [5].
+--------------------------------------------------------------
+//Question: 
+function arrayFromValue(item) {
+  return
+    [item];
+}
+
+arrayFromValue(10)   // ?? 
+
+it's easy to miss the new line between the return keyword and [item] expression.
+However, this newline makes the JavaScript automatically insert a semicolon between return and [item] expression.
+Here's an equivalent code with the semicolon inserted after return:
+
+function arrayFromValue(item) {
+  return;
+  [item];
+}
+
+arrayFromValue(10); // => undefined
+return;              // inside the function makes it return undefined.
+--------------------------------------------------------------------------
+//Question: 
+const myName = 'Jim'; // Line 1
+
+if(myName){ // Line 2
+  myName = 'Joe'; // Line 3
+  let myName = 'Jeff'; // Line 4    // throws error, cannot access myName before initialization because 					of TDZ of myName, ignore myName with const..
+}
+
+same question, removed line 4......
+const myName = 'Jim'; // Line 1
+
+if(myName){ // Line 2
+  myName = 'Joe'; // Line 3       // cannot change variable myName defined with const..
+}
+-------------------------------------------------------------------------------
 // Question: What is typeof arguments
 // Answer: Object. arguments are array like but not array. it has length, can access by index but can't push pop, etc.
 
@@ -69,6 +159,40 @@ It's important to note that bind method creates a new function and does not chan
         foo();
         typeof a; // => undefined
         typeof b; // => number
+
+-------------------------------------------------------------
+const person1 = {
+  name: 'Willie',
+  address: {
+    city: 'Austin',
+    state: 'Texas'
+  }
+};
+
+const person2 = {...person1};
+
+person2.name = 'Waylon';
+person2.address.city = 'Fort Worth';
+
+console.log(person1.name); // Willie
+console.log(person1.address.city)  // Fort Worth 
+
+// The change is due to the fact that object created with spread operator and Object.assign({}) creates a shallow copy for one level objects but deep copy for nested objects.
+person1 and person2 are not the same object, but both person1.address and person2.address are pointed to the same object in memory. 
+-------------------------------------------------------------------------
+
+const memoryFunction = (x) => {
+  const y = x;
+  return (z) => {
+    console.log(y * z);
+  }
+}
+
+const innerMemoryFunction = memoryFunction(5);
+
+memoryFunction(6)(6); // Line 8     // 36
+innerMemoryFunction(6)(6); // Line 9    //  Shows 30 but then due to extra (6) arguement throws an 						error. 
+---------------------------------------------------------------
 
 //for (var i = 0; i < 3; i++) {
   const log = () => {
@@ -159,6 +283,17 @@ it's not a good practice to use objects as keys in JavaScript because objects ar
 Numbers in JavaScript are treated with floating point precision, and as such they might not give expected results
 Remember promises have higher priority then set timeout, if you get any question where the time setTimeout Is same but promises and setTimeout then output from promise will come earlier
 
+//Question: 
+How would you check if a number is an integer?
+function isInt(num) {
+  return num % 1 === 0;
+}
+
+A very simply way to check if a number is a decimal or integer is to see if there is a remainder left when you divide by 1. if remainder is 0 then output is integer.
+
+console.log(isInt(4)); // true
+console.log(isInt(12.2)); // false
+console.log(isInt(0.3)); // false
 
 // Question: What is console.log(true+false)
 // Answer: 1 here true -->> 1 & false -->> 0 then 1 + 0 -->> 1
@@ -388,6 +523,18 @@ let a = missingOdd(arr);
 console.log(a);
 
 ---------------------------------------------------------------------
+//function to check if the strings are anagram of each other
+function anagrams(str1,str2){
+    str1 = str1.toLowerCase().split('').sort().join('')
+    str2 = str2.toLowerCase().split('').sort().join('')
+    return str1 === str2
+    
+}
+let str1 = "hello"
+let str2 = "olleh"
+console.log(anagrams(str1,str2))  //true
+
+---------------------------------------------------------------------------
 // Reverse a code word by word
 
 function reverse(str) {
@@ -400,8 +547,74 @@ let str = "This is JavaScript code";
 let c = reverse(str);
 console.log(c);  // sihT si tpircSavaJ edoc 
 -------------------------------------------------------------------
+// How would you use a closure to create a private counter?
+function counter() {
+  var _counter = 0;
+  // return an object with several functions that allow you
+  // to modify the private _counter variable
+  return {
+    add: function(increment) { _counter += increment; },
+    retrieve: function() { return 'The counter is currently at: ' + _counter; }
+  }
+}
+
+// error if we try to access the private variable like below
+// _counter;
+
+// usage of our counter function
+var c = counter();
+c.add(5); 
+c.add(9); 
+
+// now we can access the private variable in the following way
+c.retrieve(); // => The counter is currently at: 14
+--------------------------------------------------------------------------
+// function to count vowels in a String
+
+function CountVowels(str){
+    let vowels = ['a','e','i','o','u']
+    let obj = {}
+    str = str.toLowerCase()
+    let count = 0
+    for(let i =0; i<str.length; i++){
+        var char = str[i]
+        if(vowels.includes(char)){
+            obj[char] = (obj[char] || 0) + 1 
+	    count++
+        }
+    }
+	obj = Object.keys(obj) // [e,o,i,a] // gives unique values
+    return {obj,count}
+}
+let str = 'hello India'
+console.log(CountVowels(str))   // { obj: { e: 1, o: 1, i: 2, a: 1 }, count: 5 }
+-------------------------------------------------------------
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
+
+//Question: What is the output?
+	var y = 1; 
+	if (function f() {}) { //<-- evaluating foo to true, hence typeof foo = undefined
+	  y += typeof f;
+	}
+	console.log(y);  //1undefined
+
+	var k = 1;
+	if (1) {
+	  eval(function foo() {}); //<-- evaluating foo hence typeof foo = undefined
+	  k += typeof foo;
+	}
+	console.log(k);  // 1undefined
+	
+	var k = 1;
+	if (1) {
+	  function foo() {};  // <--directly checking typeof foo, hence function...
+	  k += typeof foo;
+	}
+	console.log(k); // output 1function
+
+//any function without return statement returns undefined. 
+// If condition statement evaluate using eval so eval(function f() {}) which return function f() {} which is true so inside if statement code execute. typeof f return undefined because if statement code execute at run time, so statement inside if condition evaluated at run time.
 
 // Question: What is the value of parseFloat('12.3.4')
 // Answer: 12.3
@@ -458,6 +671,15 @@ console.log(delete data.name); //true
 console.log(data)//{}
 //Explaination : delete will return either true or false.
 -----------------------------------
+// Question 
+To check whether num is even or odd without using loop
+function checkNumber(num){
+    const check = ['even', 'odd'];
+    console.log(`${num} is ${check[num%2]}`);
+}
+checkNumber(6); // 6 is even
+checkNumber(5); // 5 is odd
+-------------------------------------
 let data ={name: "priya"}
 console.log(delete data); //false
 //Explaination : We can delete the object property only. We can't able to delete the object(i.e, data).
@@ -466,34 +688,48 @@ const data = ["piya", "priya", "supriya"];
 const [y] = data;
 console.log(y); //"piya"
 //Explaination : We are doing destructuring here. y is representing the first index only
--------------------------------------
+-------------------------------------------
+var obj = {
+    name : 'Sourabh',
+    sports : ['Chess', 'Football', 'Snooker']
+}
+
+var mySports= obj.sports.slice();    //slice creates a new reference/array of the sports array. 
+console.log(mySports, obj.sports)     //[ 'Chess', 'Football', 'Snooker' ] , [ 'Chess', 'Football', 'Snooker' ] 
+obj.sports.push('Bowling');          //pushes to obj only
+console.log(mySports, obj.sports)     // [ 'Chess', 'Football', 'Snooker' ] , [ 'Chess', 'Football', 'Snooker', 'Bowling' ]
+mySports.add('cricket')       	      
+console.log(mySports,obj.sports)     //[ 'Chess', 'Football', 'Snooker', 'cricket' ],  [ 'Chess', 'Football', 'Snooker', 'Bowling' ]
+
+any changes made to the original or the array created by slice does not affect any other array
+--------------------------------------------------------------------------------------
 const data = ["piya", "priya", "supriya"];
 const [y,z] = data;
 console.log(y,z); //"piya", "priya"
 //Explaination : We are doing destructuring here. y is representing the first index only and z representing the second index.
---------------------------------------
+--------------------------------------------------------------------
 const data = ["piya", "priya", "supriya"];
 const [,m] = data; // way to access any specific element here at second position
 console.log(m); //"priya"
 //Explaination : To access any element without taking previous values, we can do just write comma.
---------------------------------------
+----------------------------------------------------------------------
 const data ={name:"priya"}
 const {name} = data; //how to get the name property without . dot operator
 console.log(name);//priya
 //Explaination : Here we did object destructuring.It's not store in continuos memory location but array store in continuoes memory location so that's why we used comma in an array.
---------------------------------------
+---------------------------------------------------------------
 let data ={name:"priya"}
 let data1={city:"ABC"}
 data = {...data, ...data1} //merge 2 objects
 console.log(data); // {name:"priya", city:"ABC"}
 //Explaination : using spread operator we use to merge the 2 objects. Three dots will pop out the property from an object and assign inside curly brackets.
------------------------------------------
+-----------------------------------------------------------
 let data ={name:"priya"}
 let data1={city:"ABC"}
 data = {data, ...data1} //merge 2 objects
 console.log(data); // { "data" : {name:"priya"}, "city": "ABC"}
 //Explaination :Three dots will pop out the property from an object and assign inside curly brackets. If we didn't do destructing or spread operator then key will be object name(i.e, data) and assign the value as whole object into it.
-------------------------------------------
+---------------------------------------------------------
 let data ={name:"priya"}
 let data1={city:"ABC", name: "supriya"}
 data = {...data, ...data1} //merge 2 objects
@@ -852,6 +1088,45 @@ console.log(sayHi.call(person,21)); //"priya is 21"
 console.log(sayHi.bind(person,21)); //it will return a function. //function sayHi(age){  return `${this.name} is ${age}`;}
 console.log(sayHi.bind(person,21)()); //"priya is 21"
 //Explaination : Bind will always return a function so require to invoke the function.
+------------------------------------------------------------------------------
+let greeting = {
+    message: 'Good morning!', 
+    name: 'Sourabh',
+displayMessage() {
+        console.log(`Hello ${this.name}, ${this.message}`);
+    }
+};
+setTimeout(greeting.displayMessage, 1000);;      // Hello Undefined Undefined
+
+solutions: 
+--------------------------------------------
+1.
+
+let greeting = {
+    message: 'Good morning!', 
+    name: 'Sourabh',
+displayMessage() {
+        console.log(`Hello ${this.name}, ${this.message}`);   
+    }
+};
+setTimeout(function() {
+  greeting.displayMessage();                  //Hello Sourabh Good Morning!!
+}, 1000);  
+
+//This will work because it receives greeting from the outer lexical environment, and then calls the method normally.
+
+2. 
+let greeting = {
+    message: 'Good morning!', 
+    name: 'Sourabh',
+displayMessage() {
+        console.log(`Hello ${this.name}, ${this.message}`);
+    }
+};
+let welcomeMessage = greeting.displayMessage.bind(greeting);
+setTimeout(welcomeMessage, 1000);   // Hello Sourabh Good Morning!!
+
+//Here we take the method greeting.displayMessage and bind it to greeting. The displayMessage is a “bound” function, that can be called alone or passed to setTimeout (doesn’t matter, the context will be right).
 ------------------------------------------------------------------------------
 function sayHi(){
   return (()=>0)();
@@ -1256,7 +1531,13 @@ So, after another 2 sec, value of b will be 2, and then immediately after that, 
 
 👉 Output : 1 + 2 + 3 = 6
 👉 Total time: 1 (line 10) + 2 (await b, in line 14) + 0 (await c, in line 14) = 3 sec
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+let date = new Date(95, 3);
+console.log(date.toLocaleString('default'));
+
+It prints “4/1/1995, 12:00:00 AM”. When only a year is provided, it maps to the 20th century. Also, January is month 0. Therefore, new Date(95, 3) creates a Date object set to April 1995.
+
+------------------------------------------------------------------
 const fetchData = function(){
   return new Promise((res, reject)=>{
     reject("Error!!")
