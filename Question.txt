@@ -83,8 +83,9 @@ const myName = 'Jim'; // Line 1
 
 if(myName){ // Line 2
   myName = 'Joe'; // Line 3
-  let myName = 'Jeff'; // Line 4    // throws error, cannot access myName before initialization because 					of TDZ of myName, ignore myName with const..
+  let myName = 'Jeff'; // Line 4    // throws error, cannot access myName before initialization because 					of TDZ of myName, ignore 
 }
+myName with const..
 
 same question, removed line 4......
 const myName = 'Jim'; // Line 1
@@ -208,7 +209,7 @@ It's important to note that if we use let instead of const in the for loop, the 
 
 //for (let i = 0; i < 3; i++) {
   const log = () => {
-    console.log(i); // 3 3 3 three times program will execute.
+    console.log(i); // 0,1,2 three times program will execute.
   };
   setTimeout(log, 100);
 }
@@ -240,9 +241,12 @@ This is the common way to solve this problem, also named as "IIFE" (Immediately 
 	    console.log(this.name)
 	};
 	var obj1 = { name: "akash" };
-	obj.display.call(obj1);     // akash
-	obj.Tiger.call(obj1) // undefined. Because it is an arrow function which only points to its lexical environment which is the environment for obj which is global scope or window object. And there is no name variable in window,hence undefined.
+	obj.display.call(obj1);               // akash
+	obj.Tiger.call(obj1)              
 }
+
+// undefined. Because it is an arrow function which only points to its lexical environment which is the environment for obj which is global scope or window object. And there is no name variable in window,hence undefined.
+
 
 // var length = 10
   function fn(){
@@ -252,13 +256,15 @@ This is the common way to solve this problem, also named as "IIFE" (Immediately 
 var obj = {
   length: 5,               //local scope
   method: function(fn){  
-      fn()
+      fn()                 // fn will call normally
       arguments[0]()      // arguments will find values from (fn,1), arguments[0] means fn.
 }
 }
 obj.method(fn,1) // fn will call, with 10 value because of outer scope.
 
-//
+//  window, 10 
+//  argumentsObj, 2
+
 const a = {};
 const b = { key: "b" };
 const c = { key: "c" };
@@ -280,7 +286,8 @@ So, a[b] and a[c] will be equivalent to a ["[object Object]"] and the value of t
 it's not a good practice to use objects as keys in JavaScript because objects are not guaranteed to have a consistent string representation, and so using them as keys can lead to unexpected behavior.
 
 //0.1 + 0.3 = 0.30000000000004
-Numbers in JavaScript are treated with floating point precision, and as such they might not give expected results
+Numbers in JavaScript are treated with floating point precision, and as such they might not give expected results.
+
 Remember promises have higher priority then set timeout, if you get any question where the time setTimeout Is same but promises and setTimeout then output from promise will come earlier
 
 //Question: 
@@ -594,24 +601,27 @@ console.log(CountVowels(str))   // { obj: { e: 1, o: 1, i: 2, a: 1 }, count: 5 }
 
 //Question: What is the output?
 	var y = 1; 
-	if (function f() {}) { //<-- evaluating foo to true, hence typeof foo = undefined
+	if (function f() {}) {
 	  y += typeof f;
 	}
 	console.log(y);  //1undefined
 
 	var k = 1;
 	if (1) {
-	  eval(function foo() {}); //<-- evaluating foo hence typeof foo = undefined
+	  eval(function foo() {}); 
 	  k += typeof foo;
 	}
 	console.log(k);  // 1undefined
 	
 	var k = 1;
 	if (1) {
-	  function foo() {};  // <--directly checking typeof foo, hence function...
+	  function foo() {};  // 
 	  k += typeof foo;
 	}
 	console.log(k); // output 1function
+
+
+ //<-- evaluating foo to true inside if, hence typeof foo = undefined, //<-- evaluating foo hence typeof foo = undefined , <--directly checking typeof foo, hence function...
 
 //any function without return statement returns undefined. 
 // If condition statement evaluate using eval so eval(function f() {}) which return function f() {} which is true so inside if statement code execute. typeof f return undefined because if statement code execute at run time, so statement inside if condition evaluated at run time.
@@ -619,8 +629,9 @@ console.log(CountVowels(str))   // { obj: { e: 1, o: 1, i: 2, a: 1 }, count: 5 }
 // Question: What is the value of parseFloat('12.3.4')
 // Answer: 12.3
 
-// Question: What is the value of Math.max([2,3,4,5]);
+// Question: What is the value of Math.max([2,3,4,5]);  
 // Answer: NaN
+//it should be Math.max(1,2,3,4,5)
 
 // Question: typeof(NaN)
 // Anwser:"number"
@@ -664,6 +675,7 @@ console.log(data); //20
 ---------------------------------
 const set = new Set([1,1,2,2,3,4,5])
 console.log(set) //{1,2,3,4,5}
+console.log(Array.from(set))  // [1,2,3,4,5]
 //Explaination : It will remove duplicate values.
 ---------------------------------
 let data ={name: "priya"}
@@ -681,8 +693,10 @@ checkNumber(6); // 6 is even
 checkNumber(5); // 5 is odd
 -------------------------------------
 let data ={name: "priya"}
-console.log(delete data); //false
-//Explaination : We can delete the object property only. We can't able to delete the object(i.e, data).
+console.log(delete data); 
+
+//answer -> false
+//Explaination : We can delete the object property only i.e. delete data.name will work, but We can't able to delete the object(i.e, data).
 ------------------------------------
 const data = ["piya", "priya", "supriya"];
 const [y] = data;
@@ -805,7 +819,9 @@ console.log(`${(x => x)('I love')} to program`) //"I love to program"
 function sumValues(x,y,z){
   return x+y+z;
 }
-sumValues(...[2,3,4]) //how to call a function so that output will be 9
+sumValues(...[2,3,4]) 
+
+//how to call a function so that output will be 9
 //Explaination : we can't do like this sumValues(2,3,4).
 ----------------------------------------------------
 const name = "priya is a girl.";
@@ -949,9 +965,15 @@ function fruit(){
 fruit()
 //Explaination : Hoisting concept used here. Error because in LET declaration first then only we can use it. but in var we can use brfore its declaration.
 -------------------------------------------------------------------------------
-for(var i=0; i<3; i++){ //i=0 //1 //2 //3
+for(var i=0; i<3; i++){ 
   setTimeout(()=>console.log(i),1) // 3,3,3
 }
+
+for(var i=0; i<3; i++){ 
+  setTimeout((i)=>console.log(i),1) // 0,1,2
+}
+
+//i=0 //1 //2 //3
 //Explaination : Var is a global variable. Firstly Sync code get executed then async code will start to execute. so i value incremented from 0 to 3 when pointer reaches to setTimeout so it will print 3 thrice time.
 ---------------------------------------------------
 for(let i=0; i<3; i++){ //i=0 //1 //2 //3
@@ -1023,29 +1045,37 @@ console.log(++num); //2
 console.log(num); //2
 //Explaination : ++ will increase the value by 1. preincrement and postincrement used here.
 --------------------------------------------------------------
-function getAge(...args){ //[1000]
-  console.log(typeof args); //object
+function getAge(...args){ 
+  console.log(typeof args); 
 }
 getAge(1000);
+
+//args = [1000]  ans -> object
 //Explaination : typeof args means typeof an array means typeof [] is object.
 --------------------------------------------------------------
 function getAge(){ 
  age = 1000;
- console.log(age); //1000
+ console.log(age); 
 }
 getAge();
+
+//1000
 //Explaination : if we didn't declare with Var/Let/const then by default it will become as a Var.
 ------------------------------------------------------------------
 function getAge(){ 
   'use strict'
  age = 1000;
- console.log(age); //error
+ console.log(age); 
 }
 getAge();
+
+//error
 //Explaination : Use strict wil give a error because it forces to use a proper way of the variable declaration.
 ----------------------------------------------------------------------
 const sum = eval('10*10+5');
-console.log(sum); //105
+console.log(sum);
+
+//105
 //Explaination : It will perform the numerical operation
 ----------------------------------------------------------------------------
 const obj = {1:"a", 2:"b"}
@@ -1054,13 +1084,17 @@ console.log(obj.hasOwnProperty(1)); //true
 //Explaination : "1" and 1 treat as same.
 ----------------------------------------------------------------------------
 const obj = {a:"one", b: "two", a:"three"}
-console.log(obj); // {a:"three", b: "two"}
+console.log(obj); 
+
+// {a:"three", b: "two"}
 //Explaination : Key position will be same but tha value get updated with new value in object.
 ----------------------------------------------------------------------------
 for(let i=1; i<5; i++){
   if(i==3) continue;
-  console.log(i); //1,2,4
+  console.log(i); 
 }
+
+//1,2,4
 //Explaination : If i =3 then it will not execute the code for 3, but can execute for i=4.
 ------------------------------------------------------------------------------
 const foo = () => console.log("first");
@@ -1092,7 +1126,7 @@ console.log(sayHi.bind(person,21)()); //"priya is 21"
 let greeting = {
     message: 'Good morning!', 
     name: 'Sourabh',
-displayMessage() {
+	displayMessage() {
         console.log(`Hello ${this.name}, ${this.message}`);
     }
 };
@@ -1110,21 +1144,24 @@ displayMessage() {
     }
 };
 setTimeout(function() {
-  greeting.displayMessage();                  //Hello Sourabh Good Morning!!
+  greeting.displayMessage();               
 }, 1000);  
 
+//Hello Sourabh Good Morning!!
 //This will work because it receives greeting from the outer lexical environment, and then calls the method normally.
 
 2. 
 let greeting = {
     message: 'Good morning!', 
     name: 'Sourabh',
-displayMessage() {
+    displayMessage() {
         console.log(`Hello ${this.name}, ${this.message}`);
     }
 };
 let welcomeMessage = greeting.displayMessage.bind(greeting);
-setTimeout(welcomeMessage, 1000);   // Hello Sourabh Good Morning!!
+setTimeout(welcomeMessage, 1000);   
+
+// Hello Sourabh Good Morning!!
 
 //Here we take the method greeting.displayMessage and bind it to greeting. The displayMessage is a “bound” function, that can be called alone or passed to setTimeout (doesn’t matter, the context will be right).
 ------------------------------------------------------------------------------
@@ -1138,7 +1175,7 @@ function sayHi(){
   return ()=>0;
 }
 console.log(typeof sayHi()); //function
-console.log(typeof sayHi()()); //function32
+console.log(typeof sayHi()()); // number
 //Explaination : sayHi will return anonymous arrow function/IIFE, where we didn't invole the arroe function so it will return function.
 -----------------------------------------------------------------------------
 console.log(typeof typeof 1); //string
@@ -1146,13 +1183,16 @@ console.log(typeof typeof 1); //string
 -----------------------------------------------------------------------------
 const numbers = [1,2,3];
 numbers[6]=11;
-console.log(numbers); //[1,2,3,,,,11]
+console.log(numbers); //[1,2,3,(3 empty items), 11]
+		      //[0,1,2,_,_,_,11]
 //Explaination : Array store elements in a continuous memory location. It will give empty in between an array.
 -------------------------------------------------------------------------------
 const numbers = [1,2,3];
 numbers[9]=numbers;
-console.log(numbers); //[1,2,3,,,,.......]
-//Explaination: It will print infinite loop.
+console.log(numbers);
+
+//[1,2,3,(6 empty items), [1,2,3] ....infintitely]
+//Explaination: It will print infinite loop because setting array....
 -------------------------------------------------------------------------------
 console.log(!!null); //false
 console.log(!!""); //false
@@ -1167,10 +1207,11 @@ console.log(setInterval(()=>console.log('Hi'), 1000));
 console.log(setTimeout(()=>console.log('Hi'), 1000));
 console.log(setTimeout(()=>console.log('Hi'), 1000));
 console.log(setTimeout(()=>console.log('Hi'), 1000));
-//Explaination : it will print 1,2,3,Hi,Hi, Hi.
+
+//Explaination : it will print unique identifier because the setTimeOut will not wait. it will move to next... 1,2,3,Hi,Hi, Hi.
 -------------------------------------------------------------------------------
 console.log([..."priya"]); //["p","r","i","y","a"]
-//Explaination: It will convert into an array.
+//Explaination: It will convert string "priya" into an array, equal to [...string]
 -------------------------------------------------------------------------------
 const firstPromise = new Promise((res, rej)=>{
   setTimeout(res, 500, 'one');
@@ -1198,7 +1239,7 @@ console.log(data); //"75"
 console.log(typeof data); //string
 //Explaination: It will add as a string.
 ------------------------------------------------------------------------------------------
-console.log(typeof 3+4+'5'); //"number45"
+console.log(typeof 3+4+'5'); //"number45" type=string
 //Explaination: operation went from left to right side.
 ----------------------------------------------------------------------------------------
 console.log(typeof (3+4+'5')); //"75" //string
@@ -1209,7 +1250,9 @@ let data = [1,2,3].map( num =>{
   if (typeof num === 'number') return;
   return num*2;
 })
-console.log(data); //[undefined,undefined,undefined]
+console.log(data); 
+
+//[undefined,undefined,undefined]
 //Explaination: If just return then it will print undefined.
 ----------------------------------------------------------------------------------------
 function getInfo(member){
@@ -1218,14 +1261,17 @@ function getInfo(member){
 const person = {name : "supriya"}
 getInfo(person);
 console.log(person); //{"name":"priya"}
-//Explaination: If we pass an object as argument it will have call by refrence, means having same memory location.
+
+//Explaination: overwrites, If we pass an object as argument it will have call by refrence, means having same memory location.
 ----------------------------------------------------------------------------------------
 function Car(){
   this.make = "tata";
   return {make: "kia"};
 }
 const myCar = new Car();
-console.log(myCar.make); //kia
+console.log(myCar.make); 
+
+//kia
 //Explaination: return will overrite the property.If we didn't return then it will print tata.
 ----------------------------------------------------------------------------------------
 (()=>{
@@ -1237,7 +1283,9 @@ console.log(typeof x, y); //"undefined" //10
 (()=>{
   let x = y = 10;
 })()
-console.log(typeof y); //number
+console.log(typeof y); 
+
+//number
 //Explaination: x is a block scope, and y is a var because y is not declared so by default it will be var.
 ----------------------------------------------------------------------------------------
 (()=>{
@@ -1263,7 +1311,9 @@ let x =100;
 (()=>{
   var x = 10;
 })();
-console.log(x); //100
+console.log(x); 
+
+//100
 //Explaination: x=10 contain inside a block because we already declare with 100 outside so it will print 100.
 -------------------------------------------------------------------------------------------
 const func = (function(a){
@@ -1280,14 +1330,16 @@ const property = "firstName";
 const name = "Priya";
 
 const user = {
-  property : name //{"property" : "Priya"}
+  property : name 
 }
 console.log(user);
 
 const user1 = {
-  [property] : name //dynamic property required [] //{"firstName" : "Priya"}
+  [property] : name 
 }
 console.log(user1);
+
+////{"property" : "Priya"} ,{"firstName" : "Priya"}  -->  dynamic property required [] //
 ------------------------------------------------------------------------------------------
 const user ={
   name : "priya",
@@ -1345,7 +1397,7 @@ console.log(str)//{'name':'priya','age':100}"
 //convert string onto an object
 console.log(JSON.parse(str)) //{ name : "priya, "age":100}
 
-
+-------------------------------------------------------------------
 *****************
 Real Usecases : Storing in local storage. We can't store the object as a value so require to convert into a string.
 const user = {
@@ -1364,7 +1416,9 @@ const user = {
   name :"priya",
   age : 100
 }
-console.log(JSON.stringify(user,["name"])) //"{'name':'priya'}"
+console.log(JSON.stringify(user,["name"])) 
+
+//"{'name':'priya'}"
 
 //wheen we pass as a array then it will convernt only those properties and ignore rest of the proerties
 ------------------------------------------------------------------------------------------
@@ -1375,8 +1429,12 @@ const shape = {
   }
  parimeter : () => 2*Math.PI*this.radius; //this pointing to window where it's not exist
 }
-console.log(shape.diameter()) //20
-//console.log(shape.parimeter()) //Nan
+console.log(shape.diameter()) 
+//console.log(shape.parimeter()) 
+
+
+// 20 NaN
+anything * + - / defined will give NaN
 -------------------------------------------------------------------------------------------
 let user = {
   name : "Priya",
@@ -1387,7 +1445,9 @@ const name = "Supriya";
 //const {name} = user; //Identifier 'name' has already been declared 
 const {name : myName} = user;
 
-console.log(myName) //Priya
+console.log(myName)
+
+//Priya
 -------------------------------------------------------------------------------------------
 let user = {
   age : 100,
@@ -1398,7 +1458,9 @@ let user = {
 }
 
 const {fullName : {first}} = user;
-console.log(first); //"Priya"
+console.log(first); 
+
+//"Priya"
 //Destructuring at deep nested
 -------------------------------------------------------------------------------------------
 let c = {greeting : "Hey!"}
@@ -1407,23 +1469,31 @@ let d;
 d=c;
 c.greeting = "Hello"
 console.log(d.greeting); //Hello
+
 //We are passing the refrence not the propertues of an object so when we changge the roperty of any object it will reflect in both objects
 -------------------------------------------------------------------------------------------
 let person = {name : "priya"}
 const members = [person]
 person = null
-console.log(members);// [{"name":"priya"}]
+console.log(members); 
+
+
+[{"name":"priya"}]
 
 let person = {name : "priya"}
 const members = [person]
 person.name = null
-console.log(members);// [{"name":null}]
+console.log(members);
+
+// [{"name":null}]
+
+//anything either obj or arr or array of object will be null, if we do obj =null directly. but already consumed to some other obj will not be null
 //because we are modifying the property of object
 -------------------------------------------------------------------------------------------
 Ways to make deep copy:
-1. object.assign
-2. {...obj}
-3. JSON.parse(JSON.stringyfy(obj))
+1. object.assign   // one level deep, nested shallow
+2. {...obj}   //  one level deep, nested shallow
+3. JSON.parse(JSON.stringyfy(obj))  // deep
 -------------------------------------------------------------------------------------------
 console.log(1);
 
@@ -1436,6 +1506,8 @@ let value = print("Priya");
 console.log(value)
 
 console.log(2);
+
+//1 undefined 2
 Reason : It run the code quickly and it will not wait for setTimeout so value will be undefined
 ---------------------------------------------------
 Above code can be fix by callback:
@@ -1476,20 +1548,23 @@ data.then((res)=>{
   console.log(res)
 })
 
-console.log(4); //1 2 4 3
+console.log(4); 
+
+//1 2 4 3
 -------------------------------------------------------------------------------------------
 console.log(1);
 
 const data = new Promise((resolve, reject)=>{
   console.log(2);
-  //resolve(3);
 })
 
 data.then((res)=>{
   console.log(res)
 })
 
-console.log(4); //1 2 4 
+console.log(4);
+
+//1 2 4 
 If we are not returning anything it will not print anything .
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 let a = "true";
@@ -1521,7 +1596,7 @@ async function task(){
 }
 task()
 
-6 'in 3Sec'
+6 'in 3 Sec'
 
 Explanation: In line 10, a setTimeout() timer of 1 sec will be triggered and due to 'await', it will wait for the timer to expire, and after 1 sec, value of a is 1. 
 
@@ -1585,6 +1660,8 @@ inc(1)
   increment(x) //2
   .then((x)=>console.log(x)) //3
 })
+
+//  3
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const p1 = Promise.resolve("First");
 const p2 = Promise.reject("Second");
@@ -1639,7 +1716,7 @@ second()
 // it has to wait for async await to finish execution as it will block the code.
 //await pause the line of execution
 
-// first, done in first, second, success, success, done in second
+// first, done in first, success second, success, done in second
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const person1 = {
   name : "Priya"
@@ -1649,16 +1726,18 @@ const person2 = {
 }
 const person = Object.assign(person1, person2);
 
-console.log(person); //{"name" : "Dolly"}
-console.log(person.name); //Dolly
-console.log(person1.name); //Dolly
-console.log(person2.name); //Dolly
+console.log(person);
+console.log(person.name); 
+console.log(person1.name); 
+console.log(person2.name); 
 
+// {"name" : "Dolly"} Dolly Dolly Dolly
 //Having same key name so, the value is override and it will be "Dolly"
 
 Explanation : As Object.assign() method will add all the key values of person2 to person1 and return the reference of person1 to person and if same key are there they'll be overwritten.
 Basically person1 and person are referring to same object.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// currying with infinite arguments
 const calc=(a)=>{
   return (b)=>{
     if(b) return calc(a+b);
@@ -1670,6 +1749,9 @@ console.log(calc(1)(2)(3)(4)()) //10 currying
 const fetchData = function(){
   return new Promise((res)=> res("One"));
 }
+
+//Tip!! always start skimming the code and skip async code and go below till end, if find sync code then execute it first, then come back to sync code
+
 let isLoading = true;
 fetchData()
 .then((result)=>{
@@ -1941,7 +2023,7 @@ function MCQ9() {
   // 💖C) undefined   😀D) TypeError
 
   /*
-  Answer is C) undefined because "this" keyword in makePerson function will refer to the window object,
+  Answer is C) undefined because this is not in any method, and also there is no username in function, "this" keyword in makePerson function will refer to the window object,
   person.ref.userName is same as Window.userName and no property named with userName is present in window object, Hence It will console undefined.
  */
 
