@@ -595,7 +595,44 @@ function CountVowels(str){
 }
 let str = 'hello India'
 console.log(CountVowels(str))   // { obj: { e: 1, o: 1, i: 2, a: 1 }, count: 5 }
--------------------------------------------------------------
+-------------------------------------------------------------------------------
+// Add to 30 function: 
+
+using for loop
+-------------
+function addTo30(arr) {
+  let obj = {};
+  let result = [];
+  for (let i = 0; i < arr.length; i++) {
+    let currentNum = arr[i];
+    let target = 30 - currentNum;
+
+    if (obj[target] !== undefined) {
+      result.push({ [currentNum]: target });
+    }
+    obj[currentNum] = target;
+  }
+  return result;
+}
+
+
+using reduce
+-------------
+function addTo30(arr) {
+  let obj = {};
+  return arr.reduce((result, currentNum) => {
+    let target = 30 - currentNum;
+    if (obj[target] !== undefined) {
+      result.push({ [currentNum]: target });
+    }
+    obj[currentNum] = target;
+    return result;
+  }, []);
+}
+
+let arr = [11, 10, 20, 40, -10, 19, 2, 15];
+console.log(addTo30(arr));
+
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
 
