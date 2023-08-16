@@ -632,6 +632,40 @@ function addTo30(arr) {
 
 let arr = [11, 10, 20, 40, -10, 19, 2, 15];
 console.log(addTo30(arr));
+-------------------------------------------------------
+Question : Write a function to find the longest common prefix among an array of strings.
+
+function MaxL(arr){
+  let common = arr[0]
+
+   let com =  arr.map((ar)=>{
+      while(ar.indexOf(common)!==0){
+          common = common.slice(0,-1)
+      }
+    })
+    console.log(common)
+}
+let arr = ["flower","flow","flight"]
+MaxL(arr)
+
+--------------------------------------------------------
+Implement a function that converts an array of objects to an object with properties based on a specified key.
+
+function arrayToObject(arr, key) {
+  return arr.reduce((obj, item) => {
+console.log([item[key]])   // gives numbers 
+    obj[item[key]] = item;
+    return obj;
+  }, {});
+}
+
+const products = [
+  { id: 1, name: 'apple' },
+  { id: 2, name: 'banana' },
+  { id: 3, name: 'cherry' }
+];
+const productsObject = arrayToObject(products, 'id');
+-------------------------------------------------------------------------------------------------
 
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
@@ -1360,7 +1394,7 @@ const func = (function(a){
 console.log(func);
 
 output: 5
-//delete keyword only use with object properties. here a is a variable so it will not work the variable. //delete user.age 
+//delete keyword only use with object properties. and do not work in block scope here a is a variable so it will not work the variable. //delete user.age 
 ------------------------------------------------------------------------------------------
 Dynamic property of object :
 const property = "firstName";
@@ -1467,7 +1501,7 @@ const shape = {
  parimeter : () => 2*Math.PI*this.radius; //this pointing to window where it's not exist
 }
 console.log(shape.diameter()) 
-//console.log(shape.parimeter()) 
+console.log(shape.parimeter()) 
 
 
 // 20 NaN
@@ -1716,6 +1750,7 @@ runPromise();
 
 //output : Second
 
+//goes to catch block
 Promise.all() returns array of resolved promises values and if either any of the promise is rejected, then it directly returns the rejected promise value through catch block.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 console.log("start");
@@ -1753,7 +1788,7 @@ second()
 // it has to wait for async await to finish execution as it will block the code.
 //await pause the line of execution
 
-// first, done in first, success second, success, done in second
+// first, done in first, second, success,success, done in second
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const person1 = {
   name : "Priya"
@@ -1771,7 +1806,7 @@ console.log(person2.name);
 // {"name" : "Dolly"} Dolly Dolly Dolly
 //Having same key name so, the value is override and it will be "Dolly"
 
-Explanation : As Object.assign() method will add all the key values of person2 to person1 and return the reference of person1 to person and if same key are there they'll be overwritten.
+Explanation : As Object.assign() method will add all the key values of person2 to person1(from p2 to p1) and return the reference of person1 to person and if same key are there they'll be overwritten.
 Basically person1 and person are referring to same object.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // currying with infinite arguments
@@ -1815,7 +1850,7 @@ const jayesh = Object.create(person)    // Object.create creates a new empty obj
 person.displayName(); //Priya
 console.log(jayesh); //{}
 jayesh.displayName(); //Priya
-I believe Object.create() creates a new object from the existing object, and both have the same memory addresses.
+I believe Object.create() creates a new object from the existing object, which inherits from the parent's prototype
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 let p = new Promise((resolve, reject)=>{
    reject(Error("Failed!!"))   --> throwing Error                 
