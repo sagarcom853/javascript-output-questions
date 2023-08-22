@@ -3,6 +3,13 @@ https://plainenglish.io/blog/50-javascript-output-questions
 // Question: What is typeof []
 // Answer: Object. Actually Array is derived from Object. If you want to check array use Array.isArray(arr)
 -----------------------------------------------------
+All the operators have left to right precedence, applying bodmas
+but = operator has right to left precedence.
+
+this is why
+let a = b = c will give , b = c first then a = b.....
+
+----------------------------------------------
  Why does console.log(~8) output -9?
 ~ is a bitwise operator that flips bits in the bit representation of a number. In JavaScript all bitwise operations are performed on 32-bit binary numbers.8 is represented as 00000000000000000000000000001000. The ~ operator flips this to 11111111111111111111111111110111, which is -9.
 -------------------------------------------------
