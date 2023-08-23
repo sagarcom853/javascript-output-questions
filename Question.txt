@@ -90,10 +90,8 @@ const myName = 'Jim'; // Line 1
 
 if(myName){ // Line 2
   myName = 'Joe'; // Line 3
-  let myName = 'Jeff'; // Line 4    // throws error, cannot access myName before initialization because 					of TDZ of myName, ignore 
+  let myName = 'Jeff'; // Line 4    // throws error, cannot access myName before initialization because of TDZ of myName, ignore myName with const..
 }
-myName with const..
-
 same question, removed line 4......
 const myName = 'Jim'; // Line 1
 
