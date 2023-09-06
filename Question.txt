@@ -371,6 +371,30 @@ countString(str)
 //Second method uisng reduce: 
   let strCount = str.split('').reduce((a, c) => (a[c] = (a[c] || 0) + 1, a),{}); 
 -----------------------------------------------------------------------------
+// implement aa function to find longest substring without repeatition of characters: 
+let str = "there is a garden in my house"
+
+function LongestSubstring(str){
+    let LongestSubstring = ''
+    let currentSubstring = ""
+    let startIndex = 0
+    let  obj = {}
+    for(let i=0; i<str.length; i++){
+      let char= str[i]
+      if(obj[char] >= startIndex ){
+        startIndex = obj[char]+1
+      }
+      currentSubstring = str.slice(startIndex, i+1)
+      obj[char] = i
+
+      if(currentSubstring.length> LongestSubstring.length){
+        LongestSubstring = currentSubstring
+      }
+    }
+    return {LongestSubstring,obj,startIndex}
+}
+console.log(LongestSubstring(str))   // there i
+-----------------------------------------------------------------------------------------------------------------------
 // Implement a function to find the key associated with the highest value in an object containing numerical values using reduce function
 function findKeyWithHighestValue(object) {
   const keys = Object.keys(object);
