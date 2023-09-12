@@ -666,7 +666,23 @@ function addTo30(arr) {
   return result;
 }
 
+or else 
+-------------------------
 
+function addTo30(arr){
+    let obj ={}
+    let arr1 = []
+    arr.map((ar)=>{
+      let target = 30 - ar
+      if(obj[ar] === undefined){
+      obj[target] = ar
+      arr1.push({ar,target})
+      }
+    })
+    return arr1
+}
+console.log(addTo30([0,12,4,26,18,30,5]))
+---------------------------------------------------
 using reduce
 -------------
 function addTo30(arr) {
@@ -704,7 +720,7 @@ Implement a function that converts an array of objects to an object with propert
 
 function arrayToObject(arr, key) {
   return arr.reduce((obj, item) => {
-console.log([item[key]])   // gives numbers 
+	console.log([item[key]])   // gives numbers 
     obj[item[key]] = item;
     return obj;
   }, {});
@@ -717,6 +733,94 @@ const products = [
 ];
 const productsObject = arrayToObject(products, 'id');
 -------------------------------------------------------------------------------------------------
+// Create a function stringPermutations that takes a string as input and returns an array of all possible permutations of the characters in the string. 
+
+function stringPermutations(inputString) {
+  // Base case: If the input string is empty, return an array with an empty string
+  if (inputString.length === 0) {
+    return [''];
+  }
+
+  const char = inputString[0]; // Take the first character
+  const remainingChars = inputString.slice(1); // Take the remaining characters
+
+  const permutationsOfRemaining = stringPermutations(remainingChars);
+
+  const result = [];
+
+  // Iterate through each permutation of the remaining characters
+  for (const perm of permutationsOfRemaining) {
+    // Insert the current character at every position in the permutation
+    for (let i = 0; i <= perm.length; i++) {
+      const newPerm = perm.slice(0, i) + char + perm.slice(i);
+      result.push(newPerm);
+    }
+  }
+
+  return result;
+}
+
+const input = 'abc';
+const permutations = stringPermutations(input);
+console.log(permutations);
+
+second method: 
+---------------
+function stringPermutations(inputString) {
+  const result = [];
+
+  function generatePermutations(current, remaining) {
+    if (remaining.length === 0) {
+      result.push(current);
+      return;
+    }
+
+    for (let i = 0; i < remaining.length; i++) {
+      const char = remaining[i];
+      const newCurrent = current + char;
+      const newRemaining = remaining.slice(0, i) + remaining.slice(i + 1);
+      generatePermutations(newCurrent, newRemaining);
+    }
+  }
+
+  generatePermutations('', inputString);
+
+  return result;
+}
+
+const input = 'abc';
+const permutations = stringPermutations(input);
+console.log(permutations);
+
+---------------------------------------------------------------------------------------------
+Matrix Rotation: Implement a function rotateMatrix that takes a 2D square matrix as input and rotates it by 90 degrees in place (clockwise).
+
+function rotateMatrix(matrix) {
+  const n = matrix.length;
+
+  // Transpose the matrix (swap rows and columns)
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+    }
+  }
+
+  // Reverse each row to complete the rotation
+  for (let i = 0; i < n; i++) {
+    matrix[i].reverse();
+  }
+
+  return matrix;
+}
+
+const matrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+];
+
+const rotatedMatrix = rotateMatrix(matrix);
+console.log(rotatedMatrix);
 
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
