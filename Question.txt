@@ -2,7 +2,7 @@ https://plainenglish.io/blog/50-javascript-output-questions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Question: What is typeof []
 // Answer: Object. Actually Array is derived from Object. If you want to check array use Array.isArray(arr)
------------------------------------------------------
+-------------------------------------------------------------------------------------
 All the operators have left to right precedence, applying bodmas
 but = operator has right to left precedence.
 
@@ -211,7 +211,7 @@ person1 and person2 are not the same object, but both person1.address and person
 
 const memoryFunction = (x) => {
   const y = x;
-  return (z) => {
+  return (z) => {q
     console.log(y * z);
   }
 }
@@ -897,12 +897,7 @@ console.log("smile" === "smile"); //true
 JSON.parse ?
 Parse JSON object to a JavaScript value // converting data into js object
 -------------------------------------------------
-let name  = "priya";
-function getName(){
-  console.log(name); //Uncaught ReferenceError: Cannot access 'name' before initialization 
-  let name = "supriya";
-}
-getName();
+C
 //Explaination : Hoisting used here. If we use VAR the can use variable before declare. But in LET we can't do that. LET/CONST need declaration first then can use it.
 --------------------------------------------------
 let name  = "priya";
@@ -1225,7 +1220,7 @@ const baz = () => console.log("third");
 bar();
 foo();
 baz();
-//Explaination : first,third, second. Because asyn operation work post all the syn operation get complete.
+//Explaination : first,third, second. Because async operation work post all the syn operation get complete.
 ----------------------------------------------------------------------------
 <div onClick="console.log("first div")">
   <div onClick="console.log("second div")">
@@ -1234,7 +1229,7 @@ baz();
      </button>
   </div>
 </div>
-//Explaination : button, second div, first div. Even bubbling happened here.
+//Explaination : button, second div, first div. by default Event bubbling happened here.
 ---------------------------------------------------------------------------
 const person = {name:'priya'};
 function sayHi(age){
@@ -1248,7 +1243,7 @@ console.log(sayHi.bind(person,21)()); //"priya is 21"
 let greeting = {
     message: 'Good morning!', 
     name: 'Sourabh',
-	displayMessage() {
+    displayMessage() {
         console.log(`Hello ${this.name}, ${this.message}`);
     }
 };
@@ -1280,7 +1275,10 @@ let greeting = {
         console.log(`Hello ${this.name}, ${this.message}`);
     }
 };
-let welcomeMessage = greeting.displayMessage.bind(greeting);
+let welcomeMessage = greeting.displayMessage.bind(greeting);   || 
+let welcomeMessage = greeting.displayMessage.call(greeting);   ||
+let welcomeMessage = greeting.displayMessage.apply(greeting);
+
 setTimeout(welcomeMessage, 1000);   
 
 // Hello Sourabh Good Morning!!
@@ -1844,6 +1842,7 @@ second()
 const person1 = {
   name : "Priya"
 }
+
 const person2 = {
   name : "Dolly"
 }
@@ -1899,12 +1898,12 @@ const person = {
 
 const jayesh = Object.create(person)    // Object.create creates a new empty object which will inherit from the prototype.
 person.displayName(); //Priya
-console.log(jayesh); //{}
+console.log(jayesh); //    displays the whole person object {name: "Priya", displayName: ƒ displayName()}
 jayesh.displayName(); //Priya
-I believe Object.create() creates a new object from the existing object, which inherits from the parent's prototype
+I believe Object.create() creates a new object from the existing object, which inherits from the parent's prototype and the value will be the same as parent object...
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 let p = new Promise((resolve, reject)=>{
-   reject(Error("Failed!!"))   --> throwing Error                 
+   reject(Error("Failed!!"))             --> throwing Error                 
 })
 
 p.catch((error)=>{
@@ -2258,7 +2257,7 @@ function MCQ12() {
 
   person2.method(displayName); // JC
 }
-// MCQ12();
+
 
 // 👉 MCQ-13
 function MCQ13() {
