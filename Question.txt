@@ -821,6 +821,111 @@ const matrix = [
 
 const rotatedMatrix = rotateMatrix(matrix);
 console.log(rotatedMatrix);
+------------------------------------------------------------
+write function to rotate an array to left by k digits. Also write another function to rotate the array to right by k digits.
+
+function rotateLeft(arr, k) {
+  const n = arr.length;
+  k = k % n; // Handle cases where k > n  // 2/5 -> 2 but 7/5 -> 2 here this code line helps.. 
+
+  const rotatedArray = [...arr.slice(k), ...arr.slice(0, k)];
+  return rotatedArray;
+}
+rotateLeft([1,2,3,4,5], 2)   // [3,4,5,1,2]
+
+--------------------------------------
+function rotateRight(arr,k){
+  let n = arr.length
+    k = k%n
+    let resultArray = [...arr.splice(-k), ...arr.splice(0,n-k)]
+    console.log(resultArray)
+}
+
+rotateRight([1,2,3,4,5], 2) // [4,5,1,2,3]
+
+------------------------------------------------
+Writing pollyfills: 
+
+ForEach: 
+--------------
+Array.prototype.customForEach = function(cb){
+    for(let i=0;i<this.length;i++){
+      cb(this[i])
+    }
+}
+
+let arr1 = [1,2,3,4,5]
+let callback = (x)=>{
+ console.log(x)
+}
+
+arr1.customForEach(callback)
+
+Map: 
+------------
+Array.prototype.customForEach = function(cb){
+    let newArray = []
+    for(let i=0;i<this.length;i++){
+     newArray.push( cb(this[i]))
+    }
+    return newArray
+}
+
+let arr1 = [1,2,3,4,5]
+let callback = (x)=>{
+return x
+}
+
+let c = arr1.customForEach(callback)
+console.log('c',c)
+
+Filter:
+---------------
+let filterFunc=(x)=>{
+    if(x>4){
+        return x
+    }
+}
+let arr1 = [1,2,3,4,5,6,7,8]
+
+Array.prototype.customFilter = function (cb){
+    let filteredArray = []
+    for(let i=0;i<this.length;i++){
+        if(cb(this[i])){
+            filteredArray.push(this[i])
+        }
+    }
+    return filteredArray
+}
+
+let c = arr1.customFilter(filterFunc)
+console.log('c',c)
+
+reduce:
+-----------
+let arr1 = [1,2,3,4,5,6]
+
+function Red(x,y){
+    x = x+y
+    return x
+}
+
+Array.prototype.customReduce = function(cb, initial){
+    var acc = initial === undefined ? undefined : initial
+    
+    for(let i=0;i<this.length;i++){
+        console.log(acc)
+        if(acc!== undefined){
+            acc = cb.call(0,acc,this[i])
+        }else{
+            acc = this[i]
+        }
+    }
+    return acc
+}
+let c = arr1.customReduce(Red,0)
+console.log(c)
+----------------------------------------------------------
 
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
