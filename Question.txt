@@ -352,6 +352,15 @@ console.log(isInt(0.3)); // false
 
 // Question: for var a = (1, 5 - 1) * 2 what is the value of a?
 // Answer: 8
+-----------------------------
+What is the output of below code in non-strict mode?
+
+let msg = "Good morning!!";
+msg.name = "John";
+console.log(msg.name);
+
+In Strict Mode: //Error: Cannot initialize property name on String.. 
+In NonStrict Mode suppose in browser: undefined
 ------------------------------------------------------------------
 //working with Reduce functions:
 //Return unique types from food array using sets and reduce: 
@@ -735,37 +744,6 @@ const productsObject = arrayToObject(products, 'id');
 -------------------------------------------------------------------------------------------------
 // Create a function stringPermutations that takes a string as input and returns an array of all possible permutations of the characters in the string. 
 
-function stringPermutations(inputString) {
-  // Base case: If the input string is empty, return an array with an empty string
-  if (inputString.length === 0) {
-    return [''];
-  }
-
-  const char = inputString[0]; // Take the first character
-  const remainingChars = inputString.slice(1); // Take the remaining characters
-
-  const permutationsOfRemaining = stringPermutations(remainingChars);
-
-  const result = [];
-
-  // Iterate through each permutation of the remaining characters
-  for (const perm of permutationsOfRemaining) {
-    // Insert the current character at every position in the permutation
-    for (let i = 0; i <= perm.length; i++) {
-      const newPerm = perm.slice(0, i) + char + perm.slice(i);
-      result.push(newPerm);
-    }
-  }
-
-  return result;
-}
-
-const input = 'abc';
-const permutations = stringPermutations(input);
-console.log(permutations);
-
-second method: 
----------------
 function stringPermutations(inputString) {
   const result = [];
 
@@ -1816,14 +1794,37 @@ console.log(members);
 
 // [{"name":null}]
 
+const obj = {'key': 'value'};
+const array = [...obj];
+console.log(array);
+// []
+
 //anything either obj or arr or array of object will be null, if we do obj =null directly. but already consumed to some other obj will not be null
 //because we are modifying the property of object
 -------------------------------------------------------------------------------------------
 Ways to make deep copy:
 1. object.assign   // one level deep, nested shallow
-2. {...obj}   //  one level deep, nested shallow
-3. JSON.parse(JSON.stringyfy(obj))  // deep
--------------------------------------------------------------------------------------------
+2. {...obj}   //  one level deep, nested shallow 
+3. JSON.parse(JSON.stringyfy(obj))  // deep too many disavantages..
+4. Structured Clone(obj) //deep
+5.Loadash operator //deep
+6. Recursive function //deep
+------------------------------------------------------------------------------------------
+
+function add(item, items = []) {
+items.push(item);
+return items;
+}
+console.log(add('Orange'));
+console.log(add('Apple'));
+
+
+1: ['Orange'], ['Orange', 'Apple']
+2: ['Orange'], ['Apple']
+
+// 2.
+-------------------------------------------------
+
 console.log(1);
 
 function print(name){
@@ -1942,6 +1943,79 @@ console.log(date.toLocaleString('default'));
 It prints “4/1/1995, 12:00:00 AM”. When only a year is provided, it maps to the 20th century. Also, January is month 0. Therefore, new Date(95, 3) creates a Date object set to April 1995.
 
 ------------------------------------------------------------------
+Class Inheritence: 
+class Vehicle {
+  constructor(name) {
+  this.name = name;
+  }
+  start() {
+  console.log(`${this.name} vehicle started`);
+  }
+  }
+
+  class Car extends Vehicle {
+  start() {
+  console.log(`${this.name} car started`);
+  super.start();
+  }
+  }
+
+  const car = new Car('BMW');
+  console.log(car.start());
+
+
+//BMW car started
+//BMW Vehicle Started
+---------------------
+class based: 
+function Person() { }
+Person.prototype.walk = function() {
+return this;
+}
+Person.run = function() {
+return this;
+}
+let user = new Person();
+let walk = user.walk;
+console.log(walk());
+let run = Person.run;
+console.log(run());
+
+//undefined undefined
+-------------------------------
+Generator function: 
+const myGenerator = (function *(){
+  yield 1;
+  yield 2;
+  yield 3;
+  })();
+  for (const value of myGenerator) {
+
+  console.log(value);
+  break;
+  }
+  for (const value of myGenerator) {
+  console.log(value);
+  }
+  
+//1 1
+--------------------------------
+function* yieldAndReturn() {
+yield 1;
+return 2;
+yield 3;
+}
+var myGenObj = yieldAndReturn()
+console.log(myGenObj.next());
+console.log(myGenObj.next());
+console.log(myGenObj.next());
+
+{value: 1, done: false},{value: 2, done: true},{value: undefined, done: true}
+Explanation: :Generator function returns object, with values, done properties. 
+
+Nothing is yielded and executd after return 
+------------------------------------------------
+
 const fetchData = function(){
   return new Promise((res, reject)=>{
     reject("Error!!")
@@ -2819,7 +2893,7 @@ const SignUp = () => {
   useEffect(() => {
     if (name && (name.length < 6 || name.length > 16)) {
       setErr("Name should be 6-16 characters long");
-    } else {
+    } else {c
       setErr("");
     }
   }, [name]);
@@ -2908,66 +2982,47 @@ export default SignUp;
 
 //Api calling....
 
-import "./styles.css";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-function UserTable({ users }) {
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>Name</th>
-          <th>email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
 
 export default function App() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true); // Initialize as true
+  const [filteredUsers, setFilteredUSers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [err, setErr] = useState("");
-
-  let API = "https://jsonplaceholder.typicode.com/user";
+  const [err, setErr] = useState(false);
 
   async function fetchUsers() {
     try {
-      let { data } = await axios.get(API);
+      let { data } = await axios.get(
+        "https://jsonplaceholder.typicode.com/users"
+      ); 
       setErr(false);
-      setLoading(false); // Set loading to false when data is fetched
-      if (data.length > 0) {
-        if (search) {
-          const filteredData = data.filter((d) =>
-            d.name.toLowerCase().includes(search.toLowerCase())
-          );
-          setUsers(filteredData);
-        } else {
-          setUsers(data);
-        }
-      }
+      setLoading(false);
+      setUsers(data);
     } catch (err) {
-      console.log(err);
       setErr(true);
       setLoading(false);
     }
   }
+  const searchFilter = () => {
+    if (search.length > 0) {
+      const filteredData = users.filter((d) =>
+        d.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilteredUSers(filteredData);
+    } else {
+      setFilteredUSers(users);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
     fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    searchFilter();
   }, [search]);
 
   const Debounce = (cb, delay = 1000) => {
@@ -2980,9 +3035,9 @@ export default function App() {
     };
   };
 
-  const handleChange = (e) => {
+  const handleChange = Debounce((e) => {
     setSearch(e.target.value);
-  };
+  },1000);
 
   return (
     <div>
@@ -2996,15 +3051,33 @@ export default function App() {
             type="text"
             name="search"
             id="search"
-            value={search}
+            // value={search}
             onChange={handleChange}
           />
-          <UserTable users={users} />
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
   );
 }
+
 
 // Try using complex conditional sentences and reducing code instead of using simple conditional and duplicating the logic: 
  {(!vegLabel || lengthOfCards > 0) && (
