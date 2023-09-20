@@ -904,6 +904,34 @@ Array.prototype.customReduce = function(cb, initial){
 let c = arr1.customReduce(Red,0)
 console.log(c)
 ----------------------------------------------------------
+// To find maximum value of subarray in a given array: 
+
+let arr = [-2,1,-3,4,-1,2,1,-5,4]
+
+function findMaxCount(arr){
+    let sum = 0
+    let max = arr[0]
+
+    arr.forEach((num)=>{
+      max = Math.max(sum,max)
+      if(sum < 0){
+        sum = 0 
+      }
+      sum+= num
+    })
+    
+    return {sum,max}
+  }
+console.log(findMaxCount(arr))
+------------------------------------------------------
+function shuffleArray(arr){
+  let shuf = Math.floor(Math.random()*arr.length)
+  console.log(arr[shuf]) // to return any random item from the array
+  const shuffle = arr.sort(()=>Math.random() - 0.5)
+  console.log(shuffle) // returns the whole array shuffled on every turn
+}
+shuffleArray([1,2,3,4,5,89,81,9,12,345,54])
+----------------------------------------------------------
 
 // Question: What is the value of !'bang'
 // Answer: false. ! is NOT.
