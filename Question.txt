@@ -424,7 +424,7 @@ function LongestSubstring(str){
     }
     return {LongestSubstring,obj,startIndex}
 }
-console.log(LongestSubstring(str))   // there i
+console.log(LongestSubstring(str))   // garden i
 -----------------------------------------------------------------------------------------------------------------------
 // Implement a function to find the key associated with the highest value in an object containing numerical values using reduce function
 function findKeyWithHighestValue(object) {
