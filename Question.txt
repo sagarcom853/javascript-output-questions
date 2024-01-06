@@ -768,6 +768,24 @@ c.add(9);
 // now we can access the private variable in the following way
 c.retrieve(); // => The counter is currently at: 14
 --------------------------------------------------------------------------
+Function to flatten a nested array: 
+
+let arr = [1, 2, [4, 5], [6, 7, 8, 9]];
+function flat(arr) {
+  let newArr = [];
+  arr.map((ar) => {
+    if (typeof ar === "object") {
+      newArr = newArr.concat(flat(ar));
+    } else {
+      newArr.push(ar);
+    }
+  });
+  return newArr;
+}
+console.log(flat(arr));
+
+output = [1,2,4,5,6,7,8,9]
+------------------------------------------------------------------------------
 Function to flatten an nested object
 
 function flattenObject(input, parentKey = '') {
