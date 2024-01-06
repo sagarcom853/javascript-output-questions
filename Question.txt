@@ -768,6 +768,48 @@ c.add(9);
 // now we can access the private variable in the following way
 c.retrieve(); // => The counter is currently at: 14
 --------------------------------------------------------------------------
+Function to flatten an nested object
+
+function flattenObject(input, parentKey = '') {
+  let output = {};
+  for (let i in input) {
+    let key = parentKey? `${parentKey}.${i}` : i 
+    console.log(key)
+    if(typeof input[i] === 'object'){
+        Object.assign(output, flattenObject(input[i], key))
+    }else{
+        output[key] = input[i]
+    }
+  }
+  return output
+}
+
+
+const input = {
+  a: 'one',
+  b: {
+    c: 'two',
+    d: {
+      e: 'three',
+    },
+    f: {
+      g: { h: 'four' },
+    },
+  },
+  i: 'five',
+};
+
+const output = flattenObject(input);
+console.log(output);
+
+// output = {
+  a: 'one',
+  b.c: 'two',
+  'b.d.e': 'three',
+  b.f.g.h : 'four'
+}
+
+----------------------------------------------------------------------------------------
 // function to count vowels in a String
 
 function CountVowels(str){
