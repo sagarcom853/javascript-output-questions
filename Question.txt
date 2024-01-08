@@ -768,6 +768,48 @@ c.add(9);
 // now we can access the private variable in the following way
 c.retrieve(); // => The counter is currently at: 14
 --------------------------------------------------------------------------
+creating a deep copy: 
+
+function deepCopy(originalObject) {
+  const output = Array.isArray(originalObject) ? [] : {};
+
+  for (let i in originalObject) {
+    if (typeof originalObject[i] === 'object') {
+        output[i] = deepCopy(originalObject[i]);
+    } else {
+      output[i] = originalObject[i];
+    }
+  }
+  return output;
+}
+// Example input object
+const originalObject = [
+  {a: 1,
+  b: {
+    c: 2,
+    d: {
+      e: [1, 2],
+    },
+  }
+},
+]
+
+// Creating a deep copy
+const copiedObject = deepCopy(originalObject);
+// console.log(copiedObject);
+
+// Modifying the copy
+copiedObject[0].b.d.e = 99;
+
+// Checking the original object (should not be modified)
+console.log(originalObject);
+// Output: { a: 1, b: { c: 2, d: { e: 3 } } }
+
+// // Checking the copied object (modified)
+console.log(copiedObject);
+// // Output: { a: 1, b: { c: 2, d: { e: 99 } } }
+
+---------------------------------------------------------------------------------------
 Function to flatten a nested array: 
 
 let arr = [1, 2, [4, 5], [6, 7, 8, 9]];
@@ -1071,6 +1113,30 @@ function linearSearch(arr, target) {
 }
 
 -------------------------------------------------------
+write function to sort on the basis of a property
+
+function sortByProperty(array, property) {
+  // method 1:
+  let result = array.sort((a, b) => {
+    return b[property] - a[property];
+  });
+
+  //method 2:
+  let result = array.sort((a, b) => {
+    return a[property] > b[property] ? 1 : -1;
+  });
+  return result;
+}
+
+const arrayOfObjects = [
+  { name: 'John', age: 25 },
+  { name: 'Alice', age: 30 },
+  { name: 'Bob', age: 22 },
+];
+// Sorting the array of objects by the 'age' property
+const sortedArray = sortByProperty(arrayOfObjects, 'age');
+console.log(sortedArray);
+---------------------------------------------------------------------------
 Binary Search: or
 Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 
