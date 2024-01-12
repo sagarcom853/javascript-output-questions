@@ -139,14 +139,18 @@ arr.__proto__.__proto__.__proto // the parent of object or the top most is null.
 var hero = {
   _name: "XYZ",
   getSecretIdentity: function () {
-    return this. Name;
+    return this._name;
   },
 };
 
-var stoleSecretIdentity = hero. GetSecretIdentity;
+var stoleSecretIdentity = hero.getSecretIdentity;
 
 console.log (stoleSecretIdentity ()); // undefined
-console.log (hero. GetSecretIdentity()); //xyz
+console.log (hero.getSecretIdentity()); //XYZ
+
+stoleSecretIdentity = stoleSecretIdentity.bind(hero)
+console.log (stoleSecretIdentity ()); // XYZ
+
 
 //Explanation:
 When you run this code, the first console.log (stoleSecretIdentity ()) will return undefined because when you assign the getSecretIdentity function to the stoleSecretIdentity variable, you lose the context of the hero object. This keyword inside the function will now refer to the global object, and there is no _name property on the global object, so the getSecretIdentity function returns undefined.
@@ -161,7 +165,7 @@ var hero = {
     }
 };
 
-var stoleSecretIdentity = hero. getSecretIdentity. bind(hero); <-- binding
+var stoleSecretIdentity = hero.getSecretIdentity.bind(hero); <-- binding
  console.log (stoleSecretIdentity ());
 console.log (hero. GetSecretIdentity ());
 
@@ -211,7 +215,7 @@ person1 and person2 are not the same object, but both person1.address and person
 
 const memoryFunction = (x) => {
   const y = x;
-  return (z) => {q
+  return (z) => {
     console.log(y * z);
   }
 }
@@ -463,7 +467,7 @@ function moveZerosToend(arr) {
     console.log(arr)
     let count = 0
     let filler = arr.filter((ar, index) => {
-        if (ar !== 0) {
+        if (ar === 0) {
             count++
         }
         return ar !== 0
@@ -1262,7 +1266,7 @@ ForEach:
 --------------
 Array.prototype.customForEach = function(cb){
     for(let i=0;i<this.length;i++){
-      cb(this[i])
+      cb(this[i])/
     }
 }
 
