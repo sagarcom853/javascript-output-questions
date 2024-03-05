@@ -10,6 +10,7 @@ this is why
 let a = b = c will give , b = c first then a = b.....
 
 ----------------------------------------------
+
 what will be the result and why?   let x = [1, 2, 3]
   let y = x
    x += [4, 5]
