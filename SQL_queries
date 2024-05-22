@@ -1,0 +1,8 @@
+Display nth row in sql?
+
+SELECT *
+FROM employees
+ORDER BY employee_id
+LIMIT 1 OFFSET n-1;
+
+---------------------------------------------------------------------------------------------
