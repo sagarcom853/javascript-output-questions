@@ -11,4 +11,14 @@ SELECT *
 FROM employees
 ORDER BY employee_id
 LIMIT 1 OFFSET 4;
+
+Another option: using row_number()
+
+SELECT *
+FROM (
+    SELECT *, ROW_NUMBER() OVER (ORDER BY customer_id) AS row_num
+    FROM customers
+) AS numbered_rows
+WHERE row_num = 3;
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
