@@ -22,3 +22,13 @@ FROM (
 WHERE row_num = 3;
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+In my sql server if i want to show databases created:
+
+SELECT name  FROM sys.databases;  // to show databases in sql
+
+SELECT name, database_id, create_date FROM sys.databases where name not in ('master', 'tempdb','model','msdb')  // to show user defined databases
+
+SELECT name, database_id, create_date FROM sys.databases where database_id>4  // user defined databases
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
