@@ -26,9 +26,80 @@ WHERE row_num = 3;
 In my sql server if i want to show databases created:
 
 SELECT name  FROM sys.databases;  // to show databases in sql
-
 SELECT name, database_id, create_date FROM sys.databases where name not in ('master', 'tempdb','model','msdb')  // to show user defined databases
-
 SELECT name, database_id, create_date FROM sys.databases where database_id>4  // user defined databases
 
+To see the tables in SQL server: 
+
+select * from INFORMATION_SCHEMA.tables 
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Employee table 
+
+EmployeeID	FirstName	LastName	Department	Salary
+1	John	Doe	HR	50000
+2	Jane	Smith	IT	60000
+3	John	Doe	HR	50000
+4	Mike	Brown	IT	70000
+5	John	Doe	Sales	50000
+
+Here’s a query to identify duplicate rows based on FirstName, LastName, and Department:
+
+SELECT 
+    FirstName, 
+    LastName, 
+    Department, 
+    COUNT(*) AS DuplicateCount
+FROM 
+    Employees
+GROUP BY 
+    FirstName, 
+    LastName, 
+    Department
+HAVING 
+    COUNT(*) > 1;
+
+Result:
+
+FirstName	LastName	Department	DuplicateCount
+John	     Doe	     HR	          2
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Another way by Row number :
+
+The ROW_NUMBER function can be used to identify duplicate rows in a table by assigning a unique sequential integer to rows within a partition of the result set.
+By using this function, you can easily spot and handle duplicate entries.
+
+WITH EmployeeCTE AS (
+    SELECT
+        EmployeeID,
+        FirstName,
+        LastName,
+        Department,
+        Salary,
+        ROW_NUMBER() OVER (PARTITION BY FirstName, LastName, Department ORDER BY EmployeeID) AS RowNum
+    FROM
+        Employees
+)
+SELECT
+    EmployeeID,
+    FirstName,
+    LastName,
+    Department,
+    Salary,
+    RowNum
+FROM
+    EmployeeCTE
+WHERE
+    RowNum > 1;
+
+Result: 
+
+EmployeeID	FirstName	LastName	Department	Salary	RowNum
+3	          John	       Doe	        HR	      50000	   2
+
+explanation:
+1.  WITH EmployeeCTE AS ( ... ): This is a Common Table Expression (CTE) that creates a temporary result set named EmployeeCTE.
+2.  ROW_NUMBER() OVER (PARTITION BY FirstName, LastName, Department ORDER BY EmployeeID) AS RowNum: The ROW_NUMBER function assigns a unique number to each row within the partition of rows that have the same FirstName, LastName, and Department, ordered by EmployeeID.
+3.  SELECT ... FROM EmployeeCTE WHERE RowNum > 1: Selects rows from the CTE where RowNum is greater than 1, which identifies the duplicate rows.
+------------------------------------------------------------------------------------------------------------------------------------
