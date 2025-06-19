@@ -1,0 +1,6 @@
+1. What is the difference between throttling and debouncing in React event handlers?
+Answer:
+
+Debounce: Executes after user stops triggering (e.g., search input).
+
+Throttle: Executes at regular intervals (e.g., scroll event).
