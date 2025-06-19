@@ -3596,3 +3596,77 @@ export default function App() {
             )}
 
 
+-----------------------------------------------------------------
+code for Table to create movable columns tables
+
+import { useCallback, useState } from "react"
+import "./App.css"
+export const Practise = () => {
+    const [rows] = useState(5)
+    const [columns] = useState(4)
+    const [selectedRow, setSelectedRow] = useState(0)
+    const [selectedColumn, setSelectedColumn] = useState(0)
+
+    const tableRows = Array.from({ length: rows }, (_, i) => i)
+    const tableColumns = Array.from({ length: columns }, (_, i) => i)
+
+    const handleTop = useCallback(() => {
+        setSelectedRow((prev) => prev <= 0 ? rows - 1 : prev - 1)
+    }, [rows])
+
+    const handleBottom = useCallback(() => {
+        setSelectedRow((prev) => prev >= rows - 1 ? 0 : prev + 1)
+    }, [rows])
+
+    const handleRight = useCallback(() => {
+        setSelectedColumn((prev) => prev >= columns - 1 ? 0 : prev + 1)
+    }, [columns])
+
+    const handleLeft = useCallback(() => {
+        setSelectedColumn((prev) => prev <= 0 ? columns - 1 : prev - 1)
+    }, [columns])
+
+    const buttonContainers = [
+        { name: 'Top', function: handleTop },
+        { name: 'Left', function: handleLeft },
+        { name: 'Right', function: handleRight },
+        { name: 'Bottom', function: handleBottom }
+    ]
+
+    const ButtonContainer = () => (
+        <div className="button-container">
+            {buttonContainers.map((button) => {
+                return (
+                    <button key={button.name} onClick={() => button.function()} >{button.name}</button>
+                )
+            })}
+        </div>
+    )
+
+    const TableContainer = () => {
+        return (
+            <table className="table-container">
+                <tbody>
+                    {tableRows.map((row) => {
+                        return <tr className='table-row' key={row}>
+                            {tableColumns.map((column) =>
+                                <td key={column} className={`${selectedRow === row && selectedColumn === column ? 'selected' : 'table-column'}`}>{row}{column}
+                                </td>)}</tr>
+                    })}
+                </tbody>
+            </table>
+        )
+    }
+
+    return (
+        <div className='Practise-container'>
+            <ButtonContainer />
+            <TableContainer />
+
+        </div>
+    )
+}
+
+
+
+
