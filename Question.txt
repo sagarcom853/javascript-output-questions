@@ -14,6 +14,105 @@ Expected: +2
 Ans. setCount((prev)=> prev+1)
      setCount((prev)=> prev+1)
 ------------------------------------------------------------------
+Same format one more:
+
+I was interviewing a React developer and asked a deceptively simple question:
+const [count, setCount] = useState(0);
+
+const incrementHandler = () => {
+ setCount(count + 5);
+ setCount(count + 5);
+ setCount(count + 5);
+ console.log(count);
+};
+
+Then I asked:
+
+❓ What will console.log(count) print?
+ ❓ What will be the updated count value on the UI?
+
+Most candidates answered 15.
+ But guess what?
+👇 The real answer:
+console.log(count) → 0
+UI shows → 5
+Here’s why:
+
+useState updates are asynchronous.
+React batches state updates.
+
+All three calls use the same stale value of count.
+✅ To make it work correctly:
+
+setCount(prev => prev + 5);
+setCount(prev => prev + 5);
+setCount(prev => prev + 5);
+
+Now the final state will be 15, as expected.
+
+This sparked a great discussion on whether useState is synchronous or asynchronous? — and why understanding how React batches updates is so crucial.
+------------------------------------------------------------------------------------------------------------
+
+Implement a function that retries an API call n times before giving up.
+
+async function retryApiCall(apiCall, maxRetries = 3, delay = 1000) {
+  /**
+   * Retries an API call n times before giving up.
+   * @param {function} apiCall - A function that makes an API call and returns a promise.
+   * @param {number} maxRetries - The maximum number of times to retry the API call.
+   * @param {number} delay - The delay in milliseconds between retries.
+   * @returns {Promise} - A promise that resolves with the result of the API call or rejects with an error.
+   */
+  let attempt = 0;
+
+  while (attempt < maxRetries) {
+    try {
+      const result = await apiCall();
+      return result; // Success! Resolve the promise with the result
+    } catch (error) {
+      attempt++;
+      console.error(`API call failed (attempt ${attempt}):`, error);
+
+      if (attempt === maxRetries) {
+        throw new Error(`API call failed after ${maxRetries} retries: ${error.message}`); // Reject the promise with the final error
+      }
+
+      // Wait before retrying
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+}
+
+// Example usage:
+async function myApiCall() {
+  // Replace this with your actual API call logic using fetch or axios
+  return fetch('https://example.com/api/data')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    });
+}
+
+async function main() {
+  try {
+    const data = await retryApiCall(myApiCall, 5, 2000); // Retry myApiCall 5 times with a 2-second delay
+    console.log('API call successful!', data);
+  } catch (error) {
+    console.error('Failed to get data after multiple retries:', error.message);
+  }
+}
+
+// Execute the example
+// main();
+
+//  How to run this code
+//   1. Replace 'https://example.com/api/data' with your actual API endpoint.  You likely need to provide API keys and authentication  in the headers of your  `fetch()` command.
+//   2.  Uncomment  `main();`  to execute the code
+//   3.  Run this code in an environment where  `fetch`  is available (e.g., a browser console or Node.js with a `fetch` polyfill)
+------------------------------------------------------------------------------------------
+
 // Question: What is typeof []
 // Answer: Object. Actually Array is derived from Object. If you want to check array use Array.isArray(arr)
 -------------------------------------------------------------------------------------
