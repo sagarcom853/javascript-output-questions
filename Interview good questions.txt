@@ -2,5 +2,202 @@
 Answer:
 
 Debounce: Executes after user stops triggering (e.g., search input).
-
 Throttle: Executes at regular intervals (e.g., scroll event).
+--------------------------------------------------------------------------------------
+What happens if you have 3 setState calls in the same onClick handler?
+If you write:
+
+onClick={() => {
+  setCount(count + 1);
+  setCount(count + 1);
+  setCount(count + 1);
+}}
+Due to state batching, React batches all setState calls made in the same event loop and processes them together. However, because count isn't updated immediately, all three setCount(count + 1) calls will increment from the same initial count value, causing only a +1 update, not +3.
+
+✅ Fix using functional updates:
+
+onClick={() => {
+  setCount(prev => prev + 1);
+  setCount(prev => prev + 1);
+  setCount(prev => prev + 1);
+}} 
+Now it will correctly result in count + 3.
+
+2. How does React decide which components need to re-render?
+React re-renders a component when:
+1. Its state or props change
+2. Its parent re-renders and passes new props
+3. A context it consumes changes
+
+React uses virtual DOM diffing (in reconciliation) to determine what actually changed, and only updates the real DOM for those parts.
+
+✅ Optimization tips:
+
+Use React.memo to prevent unnecessary renders.
+Use useMemo/useCallback to avoid recreating values/functions on every render.
+
+3. What's the difference between synchronous and concurrent rendering?
+
+Synchronous Rendering
+Behavior	Blocking – React renders updates immediately	
+React version	Pre-React 18 (default mode)	
+Performance	Can cause jank in large UIs	
+Example use case	Form input updates
+
+concurrent rendering.
+Interruptible – React can pause, resume, or abort renders
+React 18+ (enabled via Concurrent Features like startTransition)
+Smoother experience; prioritizes urgent updates
+Suspense, transitions, animations, streaming UI
+✅ Concurrent Mode lets React be more responsive under heavy load.
+
+4. How would you debug if this button click caused performance issues?
+Here’s a structured approach:
+
+✅ React DevTools Profiler: Use the Profiler tab to record and see which components re-rendered, how long they took, and why.
+✅ Check unnecessary re-renders: Are sibling or parent components re-rendering due to props or context?
+✅ Inspect state updates: Are you batching updates or causing too many re-renders?
+✅ Optimize rendering:
+
+Use React.memo for pure functional components
+Use useCallback and useMemo properly
+✅ Throttle/Debounce if frequent UI updates (e.g., on scroll or input)
+
+5. What happens to this component during React's reconciliation process?
+During reconciliation, React:
+
+Compares the new virtual DOM with the previous one (diffing).
+Identifies what changed (props, state, children).
+Determines minimal DOM updates needed (patching).
+Schedules the updates (sync or concurrent based on mode).
+Applies changes to the real DOM.
+
+✅ If nothing significant changed, React reuses the previous DOM nodes to optimize performance.
+
+State & setState Behavior
+1. What happens if you call setState inside a useEffect without a dependency array?
+It will cause an infinite re-render loop because setState triggers a render, which re-runs the useEffect, which again calls setState. Always include a dependency array to control execution.
+
+2. If two setState calls are inside a setTimeout, will they be batched?
+Before React 18: No, they won’t be batched — both will trigger separate re-renders.
+React 18+ (with automatic batching): Yes, they will be batched even if asynchronous (like inside setTimeout, promises, etc.).
+
+3. How does React ensure immutability in state updates?
+React doesn’t enforce immutability, but relies on it to detect changes efficiently via shallow comparison. Mutating state directly may cause components to not re-render, so always return new objects/arrays.
+
+4. Why is it better to use functional updates when the next state depends on the previous one?
+Because state updates may be asynchronous and batched, relying on the current state variable may lead to stale values.
+Use functional updates to always get the latest state:
+
+setCount(prev => prev + 1);
+
+⚙️ Rendering & Reconciliation
+5. How does React identify which DOM nodes need to be updated during reconciliation?
+React uses a virtual DOM diffing algorithm. It compares the old tree to the new one, using keys and type/props to decide what changed, and applies minimal updates to the real DOM.
+
+6. What is the role of the key prop in lists during reconciliation?
+key helps React identify which items changed, were added, or removed. Without keys or with incorrect keys (like array index), React may incorrectly reuse or discard DOM nodes, causing bugs.
+
+7. What would happen if you don’t provide a key in a dynamic list?
+React will fall back to index-based keys, which can lead to rendering bugs, especially when items are reordered, added, or removed — resulting in incorrect state association or animations.
+
+8. Does React.memo prevent a component from re-rendering even if its parent re-renders?
+Yes — if the props have not changed (shallow compare), React.memo skips re-rendering. If props (or children/functions) change on each render, it won't help.
+
+⚡ Performance Optimization
+9. How would you optimize a component that re-renders frequently due to prop changes?
+Use React.memo to avoid unnecessary re-renders.
+
+Use useMemo/useCallback for props/functions.
+Restructure state to be more localized.
+Use useDeferredValue (React 18) for low-priority updates.
+
+10. How do useMemo and useCallback help reduce unnecessary re-renders?
+useMemo: Memoizes expensive computations across renders unless dependencies change.
+useCallback: Memoizes function references, avoiding child components from re-rendering unnecessarily due to function identity changes.
+
+11. When would useMemo not be effective or could be a waste?
+If the computation is lightweight, or dependencies change frequently, then memoization adds overhead without benefit. It’s useful only when:
+
+Computation is expensive
+Dependency changes are infrequent
+
+12. What tools can you use to detect re-render bottlenecks in large applications?
+React DevTools Profiler: View re-renders and component cost
+Why Did You Render: Logs unnecessary re-renders
+Performance tab in browser dev tools
+React Strict Mode to catch unintentional re-renders during dev
+
+🧠 Concurrent React & Suspense
+13. What is startTransition and when would you use it?
+startTransition (React 18) tells React a state update is non-urgent and can be interrupted. Use it for transitions like filtering large lists:
+
+startTransition(() => setQuery(filtered));
+This keeps the UI responsive while deferring slow updates.
+
+14. How does Suspense improve perceived performance for slow-loading components?
+Suspense pauses rendering of a component tree until async data (or lazy-loaded component) is ready, and displays a fallback UI in the meantime. This prevents partial or flickering UI.
+
+15. What is React's scheduler, and how does it prioritize updates in concurrent rendering?
+React’s scheduler assigns priorities (like user input, transitions, rendering) to tasks. In concurrent mode, it can pause, interrupt, or drop low-priority updates if higher ones come in — improving responsiveness.
+
+🧪 Debugging & Profiling
+16. How do you use the React DevTools Profiler to identify unnecessary renders?
+Record an interaction
+
+Look for components with long render durations
+Hover to see why they rendered (prop change, state change)
+Click components to inspect render paths
+
+17. How would you debug a component that freezes the browser tab when loading?
+Check for infinite loops (e.g., in useEffect)
+
+Profile CPU usage in Chrome DevTools
+Break down large tasks using requestIdleCallback or setTimeout
+Use lazy loading and code splitting
+Optimize expensive operations using useMemo
+
+18. What techniques would you use to identify a memory leak in a React component?
+Use Chrome's Memory tab → take snapshots before/after navigation
+
+Check for unsubscribed listeners, unmounted timers
+
+In React:
+
+Use useEffect cleanup functions
+
+Cancel async requests or subscriptions on unmount
+
+🧩 Advanced Hooks & Lifecycle
+19. What's the difference between useEffect and useLayoutEffect?
+Feature	useEffect	useLayoutEffect
+Timing	After painting	After DOM mutation, before paint
+Use case	Data fetching, analytics, etc.	DOM measurements, animations
+Blocking	Non-blocking	Blocking the browser paint
+
+Use useLayoutEffect if you need to read DOM layout before it's painted.
+
+20. How do you replicate componentDidMount and componentWillUnmount in functional components?
+useEffect(() => {
+  // componentDidMount logic
+
+  return () => {
+    // componentWillUnmount logic
+  };
+}, []); // empty deps array = run only once on mount/unmount
+
+21. What are the risks of using refs to mutate DOM or state?
+
+Bypassing React’s declarative model
+Can lead to inconsistent UI states
+Harder to test or debug
+Should be limited to:
+Accessing DOM nodes
+Integrating with 3rd-party libraries
+Managing focus/scroll
+
+
+
+
+
+
