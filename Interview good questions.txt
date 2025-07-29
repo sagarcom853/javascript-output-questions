@@ -196,6 +196,52 @@ Accessing DOM nodes
 Integrating with 3rd-party libraries
 Managing focus/scroll
 
+useful advice:
+
+𝗜 𝘂𝘀𝗲𝗱 𝘁𝗼 𝗽𝗿𝗲𝗽𝗮𝗿𝗲 𝗳𝗼𝗿 𝗳𝗿𝗼𝗻𝘁𝗲𝗻𝗱 𝗶𝗻𝘁𝗲𝗿𝘃𝗶𝗲𝘄𝘀 𝘁𝗵𝗲 𝘄𝗿𝗼𝗻𝗴 𝘄𝗮𝘆.
+- Read all the React docs.
+- Solved tons of coding problems.
+- Built side projects non-stop.
+
+Still didn’t clear most interviews.
+
+Later I realized, companies aren’t just looking for people who know React inside out.
+They want developers who can solve real problems:
+𝗧𝗵𝗶𝗻𝗴𝘀 𝗹𝗶𝗸𝗲:
+ ⚠️ Slow-loading pages
+ ⚠️ Laggy scroll
+ ⚠️ Broken mobile layout
+ ⚠️ Poor Core Web Vitals
+
+𝗛𝗲𝗿𝗲’𝘀 𝘄𝗵𝗮𝘁 𝗮𝗰𝘁𝘂𝗮𝗹𝗹𝘆 𝗵𝗲𝗹𝗽𝗲𝗱 𝗺𝗲 𝗶𝗺𝗽𝗿𝗼𝘃𝗲:
+🔍 𝗦𝘁𝗮𝗿𝘁 𝗱𝗲𝗯𝘂𝗴𝗴𝗶𝗻𝗴 𝗿𝗲𝗮𝗹 𝘄𝗲𝗯𝘀𝗶𝘁𝗲𝘀
+-  Pick any slow site and open DevTools. Ask:
+-  Are the images too large? → Compress and lazy load them
+-  Is the JavaScript blocking render? → Defer or move it
+-  Too many network calls? → Combine and cache them
+
+🗣️ 𝗣𝗿𝗮𝗰𝘁𝗶𝗰𝗲 𝘁𝗵𝗶𝗻𝗸𝗶𝗻𝗴 𝗼𝘂𝘁 𝗹𝗼𝘂𝗱
+ In interviews, don’t just code, explain your thought process.
+Say things like:
+-  I’ll check the Network tab first in case the API is slow.
+-  This component doesn’t need to re-render, I’ll memoize it.
+
+📌 𝗦𝗵𝗮𝗿𝗲 𝗿𝗲𝗮𝗹 𝘀𝘁𝗼𝗿𝗶𝗲𝘀
+Not “I built a todo app.”
+Try:
+-  I improved load time by 40% using lazy loading
+-  I fixed a scroll-related memory leak on mobile
+-  I used debouncing to reduce API calls during live search
+
+❓ 𝗔𝘀𝗸 𝗯𝗲𝘁𝘁𝗲𝗿 𝗾𝘂𝗲𝘀𝘁𝗶𝗼𝗻𝘀
+Instead of just asking about the tech stack, ask:
+-  What’s your biggest frontend challenge right now?
+-  How do you test performance across different browsers?
+-  What’s your process when something breaks in production?
+
+Once I shifted from trying to “know everything” to actually thinking like a problem solver, the interviews became easier, and the offers followed.
+
+
 
 
 
