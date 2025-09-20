@@ -1,0 +1,30 @@
+Object Inversion
+Question: Invert the key-value pairs of an object. If a value is a duplicate, the final key should be an array of the original keys.
+
+Input: {'a': 1, 'b': 2, 'c': 1}
+Expected Output: { '1': ['a', 'c'], '2': 'b' }
+
+let input = {'a': 1, 'b': 2, 'c': 1, 'd' : 2}
+// let output =   { '1': ['a', 'c'], '2': 'b' }
+
+function invert(input){
+  let result = {}
+    const keys = Object.keys(input)
+   
+for(let i in keys){
+    let key = keys[i]
+    const resultkey = result[input[key]]
+   if(resultkey){
+      result[input[key]] = [result[input[key]], key]
+   }else{
+      result[input[key]] = key
+   }
+
+}
+
+    return result
+}
+
+console.log(invert(input))
+
+---------------------------------------------------
