@@ -1,4 +1,4 @@
-Object Inversion
+1. Object Inversion
 Question: Invert the key-value pairs of an object. If a value is a duplicate, the final key should be an array of the original keys.
 
 Input: {'a': 1, 'b': 2, 'c': 1}
@@ -28,3 +28,113 @@ for(let i in keys){
 console.log(invert(input))
 
 ---------------------------------------------------
+
+2. Deep Merging
+Question: Implement a function to deeply merge two or more objects. The function should handle nested objects and arrays without overwriting existing data.
+
+let obj1 = { a: 1, b: { c: 2 } }
+let obj2 = { b: { d: 3, f: 5}, e: 2 }
+let obj3  = {l: 4, o: {s: 4}, b: {k: 4} }
+// Expected Output: { a: 1, b: { c: 2, d: 3 }, e: 4 }
+
+// Generic method for more than two objects
+function merge(...entries){
+let result = {}
+    for(let current of entries){
+            for(let i in current){
+                if(result[i]){
+                    result[i] = Object.assign(result[i], current[i])
+                }else{
+                    result[i] = current[i]
+                }
+            }
+    }
+    return result
+}
+
+//for two objects
+function merge(obj1, obj2){
+    let result = {}
+    for(let i in obj1){
+        if(result[i]){
+            
+        }else{
+            result[i] = obj1[i]
+        }
+    }
+     for(let i in obj2){
+        if(result[i]){
+            result[i] = Object.assign(result[i], obj2[i])
+        }else{
+            result[i] = obj2[i]
+        }
+    }
+    return result
+    
+}
+console.log('result', merge(obj1, obj2))
+-------------------------------------------------------------------------
+3. Object Key Reformatting
+Question: Write a function to convert an object's keys from camelCase to snake_case.
+
+let input = { firstName: 'John', lastName: 'Doe' }
+// Expected Output: { first_name: 'John', last_name: 'Doe' }
+
+function changeCasing(input){
+    // method 1
+    let result= {}
+    for(let i in input){
+        let name = i.toLowerCase().split('n')
+        let finalName = name[0]+'_n'+name[1]
+        console.log(finalName)
+        result[finalName] = input[i] 
+    }
+    return result
+    
+    // method 2
+    let result = Object.keys(input).reduce((acc, cur)=>{
+        let finalName = cur.toLowerCase().split('n').join('_n')
+        return acc[finalName] = input[cur], acc
+    },{})
+    return result
+  
+}
+console.log(changeCasing(input))
+
+------------------------------------------------------
+
+4. Grouping by Multiple Keys
+Question: Group an array of objects by the values of multiple specified keys.
+
+const input =  [{ type: 'fruit', color: 'red' }, { type: 'fruit', color: 'green' }, { type: 'vegetable', color: 'red' }]
+// Expected Output: { 'fruit-red': [{...}], 'fruit-green': [{...}], 'vegetable-red': [{...}] }
+
+const merge =(input)=>{
+    
+    // method 1
+    let result = {}
+  for(let i of input){
+      const {type, color} = i
+     const key =`${type}-${color}`
+     if(!result[key]){
+         result[key] = []
+     }
+     result[key].push(i)
+    
+  }
+
+// method 2 using reduce
+return input.reduce((acc,cur)=>{
+    const {type,color} = cur
+    const key = `${type}-${color}`
+    if(!acc[key]){
+        acc[key] = []
+    }
+    acc[key].push(cur)
+    return acc
+}, {})
+
+}
+console.log(merge(input))
+------------------------------------------------------
+
