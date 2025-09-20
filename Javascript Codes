@@ -138,3 +138,50 @@ return input.reduce((acc,cur)=>{
 console.log(merge(input))
 ------------------------------------------------------
 
+6. Value-Based Filtering
+Question: Filter an array of objects to return only those objects where at least one of their properties has a truthy value.
+let input =  [{ id: 1, name: 'A' }, { id: 2, name: null }, { id: 3, name: '' }]
+
+// Expected Output: [{ id: 1, name: 'A' }]
+
+function filterNull (input){
+    return input.filter((inp)=> inp.name)
+}
+console.log(filterNull(input))
+
+----------------------------------------------------
+7. Object Key Sorting
+Question: Return a new object with its keys sorted alphabetically.
+For sorting arrays use this method
+
+let input =  { b: 2, a: 1, c: 3 }
+
+// Expected Output: { a: 1, b: 2, c: 3 }
+
+function sorted(input){
+    let result = {}
+    let sorted = Object.keys(input).sort((a,b)=> input[a] - input[b])
+    for(let i of sorted){
+        result[i]= input[i]
+    }
+    return result
+}
+console.log(sorted(input))
+----------------------------------------------------------
+9. Dynamic Sorting
+Question: Create a function that sorts an array of objects by a dynamic key and sort order (ascending or descending).
+For sorting objects use this method
+
+let input =  [{ name: 'A', age: 30 }, { name: 'B', age: 25 }], key = 'age', order = 'desc'
+// Expected Output: [{ name: 'A', age: 30 }, { name: 'B', age: 25 }]
+
+function sorting(input, key, order){
+  let sorted = input.sort((a,b)=> {
+    if (a[key] < b[key]) return order === 'asc' ? -1 : 1;
+    if (a[key] > b[key]) return order === 'asc' ? 1 : -1;
+  })
+  return sorted
+}
+console.log(sorting(input,'age', 'asc', ))
+
+
