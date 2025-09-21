@@ -217,5 +217,140 @@ function transaction(input) {
 }
 console.log(transaction(input));
 
+--------------------------------------------------------------
+
+let input = [{ name: 'A', email: 'a@b.com' }, { name: 'B', phone: '123' }], key = 'email'
+// Expected Output: [{ name: 'A', email: 'a@b.com' }]
+
+function takeKey (input, key){
+    return input.filter((inp)=> inp[key])
+}
+// console.log(takeKey(input, 'email'))
+
+---------------------------------------------------------
+let inp =  [{ age: 10 }, { age: 25 }, { age: 40 }]
+let test = (obj) => obj.age >= 18
+
+// Expected Output: [[{ age: 25 }, { age: 40 }], [{ age: 10 }]]
+
+// function condition(cond){
+//     return 
+// }
+function fetchOutput(inp, cond){
+  let pass = []
+  let fail = []
+  for(let i of inp){
+      if(test(i)){
+          pass.push(i)
+      }else{
+          fail.push(i)
+      }
+  }
+  return{ pass, fail}
+}
+// console.log(fetchOutput(inp, test))
+
+-----------------------------------------------------------------
+
+let obj = { a: 1, b: 2 }
+// Expected Output: [{ key: 'a', value: 1 }, { key: 'b', value: 2 }]
+
+function addKeys(obj){
+    let entry = Object.entries(obj)
+
+    let result = entry.reduce((acc,cur)=>{
+        let per = {}
+       let [key,value] = cur
+       // if using per
+    //   per['key'] = key
+    //   per['value'] = value
+        acc.push({key, value})
+        return acc
+    }, [])
+    return result
+}
+
+// console.log(addKeys(obj))
+-----------------------------------------------------------------------
+const fruitsArray = [
+  { category: "fruit", subcategory: "citrus", name: "lemon" },
+  { category: "fruit", subcategory: "citrus", name: "orange" },
+  { category: "fruit", subcategory: "sweet", name: "lichi" },
+];
+
+// Expected Output: { 'fruit': { 'citrus': [{...}, {...}] } }
+
+function nestedFruits(fruits){
+    let result = {}
+    for(let fruit of fruits){
+        const {category, subcategory, name} = fruit
+        if(!result[category]){
+            result[category] = {}
+        }
+        if(!result[category][subcategory]){
+            result[category][subcategory] = []
+        }
+        result[category][subcategory].push(fruit)
+
+    }
+    return result
+}
+// console.log(nestedFruits(fruitsArray))
+--------------------------------------------------------------------------
+let arr = [{ a: 1, b: 2 }, { a: 1, c: 3 }], subset = { a: 1, b:2 }
+// Expected Output: [{ a: 1, b: 2 }, { a: 1, c: 3 }]
+
+function filterAnd(arr, subset){
+    // 1st process
+    let keys = Object.entries(subset)
+    console.log(keys[0])
+    let key = keys[0][0]
+    let value = keys[0][1]
+    let result = arr.filter((ar)=> ar[key] === value
+    )
+return result
+}
+//2nd process/ generic process.
+function filterAnd(arr, subset) {
+  const entries = Object.entries(subset);
+  return arr.filter(obj =>
+    entries.every(([key, value]) => obj[key] === value)
+  );
+}
+
+// console.log(filterAnd(arr, subset))
+-----------------------------------------------------------------------
+let arr1 = [{ status: 'a', value: 10 }, { status: 'a', value: 20 }, { status: 'b', value: 30 }] 
+let groupBy = 'status'
+let aggregateBy = 'value' 
+let type = 'sum'
+
+// Expected Output: { 'a': 30, 'b': 30 }
+
+function aggregate(arr1, groupby, aggregateBy, type){
+    let result = {}
+    for(let i of arr1){
+        const {status, value} = i
+       console.log(i,status, value)
+        if(!result[status]){
+            result[status] = value
+        }else{
+            console.log(value)
+            if(type=== 'sum'){
+                result[status] = value + result[status]
+            }
+            if(type === 'substact'){
+                result[status] = result[status]- value
+            }
+        }
+    }
+    return result
+}
+
+console.log(aggregate(arr1, 'status', 'value', 'substract'))
+
+
+
+
 
 
