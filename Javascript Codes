@@ -184,4 +184,38 @@ function sorting(input, key, order){
 }
 console.log(sorting(input,'age', 'asc', ))
 
+-----------------------------------------------------
+
+11. Array to Nested Object with Aggregation
+Question: Transform a flat array of transaction objects into a nested object, grouped by year, month, and then by transaction type, with the total amount for each type.
+let input = [
+  { date: "2023-01-01", type: "food", amount: 10 },
+  { date: "2023-01-05", type: "travel", amount: 50 },
+  { date: "2023-02-10", type: "food", amount: 20 },
+];
+
+// Expected Output: { '2023': { '01': { 'food': 10, 'travel': 50 }, '02': { 'food': 20 } } }
+
+function transaction(input) {
+  let result = {};
+  for (let i of input) {
+    const { date, type, amount } = i;
+    const [year, month] = date.toString().split("-");
+    if (!result[year]) {
+      result[year] = {};
+    }
+    if (!result[year][month]) {
+      result[year][month] = {};
+    }
+    if (!result[year][month][type]) {
+      result[year][month][type] = 0;
+    }
+    result[year][month][type] += amount;
+  }
+
+  return result;
+}
+console.log(transaction(input));
+
+
 
