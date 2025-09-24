@@ -280,6 +280,8 @@ const fruitsArray = [
 
 // Expected Output: { 'fruit': { 'citrus': [{...}, {...}] } }
 
+//method 1 manually assign each and every object key, 
+
 function nestedFruits(fruits){
     let result = {}
     for(let fruit of fruits){
@@ -296,6 +298,31 @@ function nestedFruits(fruits){
     return result
 }
 // console.log(nestedFruits(fruitsArray))
+
+//method 2: take a generic approach with keys being ['category', 'subcategory']
+
+function groupByKeys(data, keys) {
+  const result = {};
+
+  for (const item of data) {
+    let current = result;
+
+    keys.forEach((key, i) => {
+      const value = item[key];
+      if (!current[value]) {
+        current[value] = (i === keys.length - 1) ? [] : {};
+      }
+      current = current[value];
+    });
+
+    current.push(item);
+  }
+
+  return result;
+}
+
+
+console.log(JSON.stringify(groupByKeys(data, keys),null,2));
 --------------------------------------------------------------------------
 let arr = [{ a: 1, b: 2 }, { a: 1, c: 3 }], subset = { a: 1, b:2 }
 // Expected Output: [{ a: 1, b: 2 }, { a: 1, c: 3 }]
@@ -349,8 +376,133 @@ function aggregate(arr1, groupby, aggregateBy, type){
 
 console.log(aggregate(arr1, 'status', 'value', 'substract'))
 
+-----------------------------------------------------
+
+30. Recursive Property Counting
+Question: Count the total number of properties in a deeply nested object.
+
+Input: obj = {a: 1, b: {c: 2}}
+Expected Output: 3
+
+let obj = {a: 1, b: {c: 2, d:5}, e: {}}
+
+// Expected Output: 3
+
+function count(obj){
+    let cunt = 0
+    for( let i in obj){
+       if(typeof obj[i] === "object"){
+           cunt+= count(obj[i]) +1 
+       }else{
+           ++cunt
+       }
+    }
+    return cunt
+}
+
+console.log(count(obj))
+
+--------------------------------------------------
+Creating a Nested Object from Two Arrays
+
+const keys = ['a', 'b']
+const values = [{c: 1}, {d: 2}]
+
+// Expected Output: {a: {c: 1}, b: {d: 2}}
+function merge(keys, values){
+    let result = {}
+    keys.forEach((key, i)=>{
+        result[key] = values[i]
+    })
+    return result
+}   
+
+console.log(merge(keys,values))
+
+----------------------------------------
+Sorting array of objects based on a length of a property
+
+let arr = [{name: 'B'}, {name: 'Charlie'}, {name: 'A'}]
+
+// Expected Output: [{name: 'Charlie'}, {name: 'B'}, {name: 'A'}]
+
+function sort(arr){
+    
+    let result =  arr.sort((a,b)=>{
+        return b.name.length - a.name.length
+    })
+    return result
+}
+
+console.log(sort(arr))
+
+------------------------------------------------
 
 
 
+let transactions = [{amount: 10}, {amount: 15}, {amount: 25} , {amount:20}]
+let groupFn = (t) => t.amount === 20 ?'medium' : t.amount>20 ? 'large' : 'small'
 
+// Expected Output: { small: [{amount: 10}, {amount: 15}], large: [{amount: 25}] }
 
+function transact(arr, fn){
+    let result = {}
+    for(let i of transactions){
+        let quantity = groupFn(i)
+        if(!result[quantity]){
+                result[quantity] = []
+        }
+        result[quantity].push(i)
+        
+    }
+    return result
+}
+console.log(transact(transactions, groupFn))
+
+-------------------------------------------------
+const keys = ['a', 'b'] const values = [{c: 1}, {d: 2}] 
+// Expected Output: {a: {c: 1}, b: {d: 2}}
+
+function merge(keys, values){
+  let result = {}
+  keys.forEach((key, i) => {
+    result[key] = values[i]
+  })
+  return result
+}
+
+------------------------------------------------
+
+let arr1 = [{a: 1}, {a: 2}]
+let arr2 = [{b: 10}, {b: 20}]
+
+// Expected Output: [{a: 1, b: 10}, {a: 2, b: 20}]
+function transact(arr, fn){
+    let result = []
+    arr.forEach((ar,i)=>{
+        const ar1 = arr2[i]
+        // method 1
+        result.push({...ar, ...ar1})
+        // method 2
+        // result.push(Object.assign(ar, ar1))
+    })
+    return result
+}
+console.log(transact(arr1,arr2))
+
+-------------------------------------------------------
+
+let arr = [
+  { id: 1, desc: "short" },
+  { id: 2, desc: "a very long description" },
+  { id: 3, desc: "a very long description afganistt" },
+  { id: 4, desc: "a very long description is here" },
+  { id: 5, desc: "description" },
+],
+
+function findLongestString(arr, key){
+    // sort the columns first.
+   let sorted = arr.sort((a,b)=> b[key].length - a[key].length)
+   return sorted[0]
+}
+console.log(findLongestString(arr, 'desc'))
