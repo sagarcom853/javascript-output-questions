@@ -1,3 +1,21 @@
+Types of Two pointers:
+1. Opposite directions:
+
+One pointer starts at the beginning, anohter at the end
+They moved towards each other
+Used for: Sorted arrays, Palindromes, pair sum problems.
+
+2. Same direction (Fast & slow Pointers)
+Both pointers start at the beginning
+One moves fast and the other moves slow
+Used for: Removing duplicates, cycle detection, finding middle.
+
+3. Sliding Window (special case)
+Both pointers move in the same direction
+Used for: Sub array problems, longest/shortest array.
+
+Examples: 
+
 //Function to find indices of numbers that add to a target
 //Time O(n) | Space O(1)
 //Method 1
@@ -132,4 +150,89 @@ function dup(arr){
 
 console.log(dup([1, 1, 2, 2, 3, 3, 4]))
 
+-----------------------------------------------------------------------------------------
+Find max water in the container
+//Time: O(n) | Space: O(1)
 
+let input = [1,8,6,2,5,4,8,3,7]
+function maxArea(input){
+    let left = 0
+    let right = input.length-1
+    let maxWater = 0
+    while(left< right){
+    let width = right - left
+    let height = Math.min(input[left], input[right])
+    let area = width * height
+    maxWater = Math.max(maxWater, area)
+     if(input[left]< input[right]){
+        left++
+    }else{
+        right--
+    }
+    }
+    return maxWater
+}
+
+console.log(maxArea(input))
+
+--------------------------------------------------------------------------------------
+
+Move zeroes to the end: (Same direction)
+
+// Method 1: Two pointer approach
+// Complexity : Time O(n) | Space O(1)
+
+function Zeroes(arr){
+    let slow = 0
+    for(let fast =0; fast<arr.length; fast++){
+        if(arr[fast]!==0){
+            [arr[slow], arr[fast]] = [arr[fast],arr[slow]]
+            slow++
+        }
+    }
+}
+
+console.log(Zeroes([0,1,0,3,12,1]))
+
+// Method 2: JS solution
+// Complexity : Time O(n2) | Space O(1)
+
+function Zeroes(arr){   
+    let count = 0
+for(let i = 0 ; i<arr.length; i++){
+if(arr[i] === 0){
+    arr.splice(i,1)
+    count++
+}
+}
+for(let i=0; i<count; i++){
+    arr.push(0)
+}
+return arr
+}
+
+console.log(Zeroes([0,1,0,3,12,1]))
+
+//Method 3: Shift and fill
+// Complexity : Time O(n) | Space O(1)
+
+function moveZeroes(arr) {
+    let lastNonZeroFoundAt = 0;
+    // 1. Shift all non-zero elements to the front
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== 0) {
+            arr[lastNonZeroFoundAt] = arr[i];
+            lastNonZeroFoundAt++;
+        }
+    }
+
+    // 2. Fill the remaining spots with zeroes
+    for (let i = lastNonZeroFoundAt; i < arr.length; i++) {
+        arr[i] = 0;
+    }
+    return arr;
+}
+
+console.log(moveZeroes([0, 1, 0, 3, 12, 1])); // Output: [1, 3, 12, 1, 0, 0]
+
+-------------------------------------------------------------------------------------
