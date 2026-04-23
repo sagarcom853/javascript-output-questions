@@ -34,9 +34,9 @@ function sum2(arr,target){
 console.log('sum2', sum2([1,2,3,4,6],6))
 
 -------------------------------------------------------------------------------------------
+Function to find Palindromes
 
 1. Two Pointers Method
-
 function palindrome(str) {
     let left = 0;
     let right = str.length - 1;
@@ -88,3 +88,48 @@ function palindrome(str) {
 }
 
 console.log(palindrome(input))
+
+-----------------------------------------------------------------------------------------------
+Function to remove duplicates :
+
+//Method 1 : using two pointers
+Complexity: Time: O(n) | Space O(1)
+function removeDuplicatesInPlace(arr) {
+    if (arr.length === 0) return arr;
+    let startIndex = 0
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[startIndex]) {
+            startIndex++;
+            arr[startIndex] = arr[i];
+        }
+    }
+    
+    // Truncate the original array to remove the trailing duplicates
+    arr.length = startIndex + 1;
+    return arr;
+}
+console.log(removeDuplicatesInPlace([1, 1, 2, 2, 3, 3, 4]))
+
+// Method 2: use array methods
+Complexity: Time: O(n2) | Space O(n)
+function duplicate(arr){
+    let result = []
+    arr.forEach((ar,i)=>{
+        if(!result.includes(ar)){
+            result.push(ar)
+        }
+    })
+    return result
+}
+console.log(duplicate([1, 1, 2, 2, 3, 3, 4]))
+
+//Method 3: using sets
+Complexity: Time: O(n) | Space O(n)
+function dup(arr){
+    let result = Array.from(new Set(arr))
+    return result
+}
+
+console.log(dup([1, 1, 2, 2, 3, 3, 4]))
+
+
