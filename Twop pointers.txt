@@ -1,0 +1,34 @@
+//Function to find indices of numbers that add to a target
+//Time O(n) | Space O(1)
+//Method 1
+function sum(arr,target){
+    let left =0
+    let right = arr.length-1
+    while(left <right){
+        let sum = arr[left]+arr[right] 
+        if(sum=== target){
+            return [left,right]
+        }else if(sum<target){
+            left++
+        }else{
+            right--
+        }
+    }
+}
+
+
+console.log('sum',sum([1,2,3,4,6],6))
+
+//Method 2
+//Time O(n2) space O(n2)
+
+function sum2(arr,target){
+    for(let i=0;i<arr.length;i++){
+        for(let j=0;j<i;j++){
+            if(arr[i]+arr[j]===target){
+                return [i,j]
+            }
+        }
+    }
+}
+console.log('sum2', sum2([1,2,3,4,6],6))
