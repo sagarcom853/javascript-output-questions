@@ -32,3 +32,59 @@ function sum2(arr,target){
     }
 }
 console.log('sum2', sum2([1,2,3,4,6],6))
+
+-------------------------------------------------------------------------------------------
+
+1. Two Pointers Method
+
+function palindrome(str) {
+    let left = 0;
+    let right = str.length - 1;
+    while (left < right) {
+        if (str[left] !== str[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+
+// Input: 'racecar' | Output: true
+// Time Complexity: O(n) | Space Complexity: O(1)
+
+
+2. Built-in Methods
+function palindrome(str) {
+    return str === str.split('').reverse().join('');
+}
+
+// Input: 'racecar' | Output: true
+// Time Complexity: O(n) | Space Complexity: O(n)
+
+
+3. Recursive Method
+function palindrome(str) {
+    if (str.length <= 1) return true;
+    if (str[0] !== str[str.length - 1]) return false;
+    return palindrome(str.slice(1, -1));
+}
+
+// Input: 'racecar' | Output: true
+// Time Complexity: O(n^2) | Space Complexity: O(n)
+
+4. For complex examples:
+let input = 'A man, a plan,'
+
+function palindrome(str) {
+    let pattern = /[A-z0-9]/g
+    let cleanedStr = str.replace(pattern, '')
+    let left = 0;
+    let right = str.length - 1;
+    while (left < right) {
+        if (cleanedStr[left] !== cleanedStr[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+
+console.log(palindrome(input))
