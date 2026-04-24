@@ -14,6 +14,19 @@ Used for: Removing duplicates, cycle detection, finding middle.
 Both pointers move in the same direction
 Used for: Sub array problems, longest/shortest array.
 
+
+Benifits: 
+1. Two pointers uses space of O(1) and built in methods use O(n)
+2. For sorted inputs use pointers
+3. Built in objects often create new arrays.
+4. Splice, slice, includes mostly work with hidden nested objects. 
+
+Use built in methods when:
+1. Small Datasets (<1000 items)
+2. Readibility> Performance
+3. One time operations, we do not want a loop. 
+4. When input isn't sorted and space isn't critical. 
+
 Examples: 
 
 //Function to find indices of numbers that add to a target
