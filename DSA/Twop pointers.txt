@@ -64,6 +64,29 @@ function sum2(arr,target){
 }
 console.log('sum2', sum2([1,2,3,4,6],6))
 
+//Method 3
+let arr = [2,6,11,7,15, 3]
+
+//using Hash Maps 
+/// Complexity : Time O(N) | space : Time O(N)
+function twoSum(arr, target){
+    let map = new Map()
+    console.log(map)
+    for (let i = 0 ; i<arr.length; i++){
+        const num = arr[i]
+        const complement = target - num
+        const index = map.get(complement)
+        console.log(index)
+        if(map.has(complement)){
+            return [num, complement]
+        }
+        
+        map.set(num, index)
+    }
+    return [-1,-1]
+}
+console.log(twoSum(arr, 9))
+
 -------------------------------------------------------------------------------------------
 Function to find Palindromes
 
